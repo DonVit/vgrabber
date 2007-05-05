@@ -43,10 +43,7 @@ public class HelpPanel extends JPanel{
         "    <li><font color=\"blue\">Doar anunturile noi aparute intr-o perioada anumita.</font>"+
         "    <li><font color=\"blue\">De vazut mai multa informatie despre cel ce ofera/cere.</font>"+
         "    </ul>    "+
-        "    <font size=+1>Aceasta aplicatie ofera aceste doua necesitati.</font>    "+
-        "    <ul>"+
-        "    Autor:Vitalie Doni <a href=\"mailo:vitalie.doni@gmail.com\">vitalie.doni@gmail.com</a>"+                
-        "    </ul>"+
+        "    <font size=+1>Aceasta aplicatie ofera aceste doua necesitati.</font>    "+        
         "  </body>"+
         "</html>";
         
