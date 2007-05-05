@@ -29,7 +29,7 @@ public class EditionManager {
         Edition edition=null;
         try{        
         String sql="SELECT id, data, note FROM editie WHERE (id = ?)";
-        java.sql.PreparedStatement psEditions=vgrabber.db.Connection.GetConnection().prepareStatement(sql);
+        java.sql.PreparedStatement psEditions=vgrabber.db.Connection.getConnection().prepareStatement(sql);
         psEditions.setInt(1,edition_id);
         psEditions.execute();
         java.sql.ResultSet rsEditions=psEditions.getResultSet();
@@ -48,7 +48,7 @@ public class EditionManager {
         ArrayList<Edition> editions=new ArrayList<Edition>();
         try{        
         String sql="SELECT id, data, note FROM editie order by id desc";
-        java.sql.PreparedStatement psEditions=vgrabber.db.Connection.GetConnection().prepareStatement(sql);        
+        java.sql.PreparedStatement psEditions=vgrabber.db.Connection.getConnection().prepareStatement(sql);        
         psEditions.execute();
         java.sql.ResultSet rsEditions=psEditions.getResultSet();
         while (rsEditions.next()){        
@@ -67,7 +67,7 @@ public class EditionManager {
         Edition edition=null;
         try{        
         String sql="SELECT top 1 id, data, note FROM editie order by id desc";
-        java.sql.PreparedStatement psEdition=vgrabber.db.Connection.GetConnection().prepareStatement(sql);        
+        java.sql.PreparedStatement psEdition=vgrabber.db.Connection.getConnection().prepareStatement(sql);        
         psEdition.execute();
         java.sql.ResultSet rsEdition=psEdition.getResultSet();
         while (rsEdition.next()){        
@@ -132,7 +132,7 @@ public class EditionManager {
         ArrayList<Message> messages=new ArrayList<Message>();
         try{        
         String sql="SELECT id, anunt, interested FROM anunt WHERE (editie_id = ?) AND (categorie_id = ?)";
-        java.sql.PreparedStatement psMessages=vgrabber.db.Connection.GetConnection().prepareStatement(sql);        
+        java.sql.PreparedStatement psMessages=vgrabber.db.Connection.getConnection().prepareStatement(sql);        
         psMessages.setInt(1,edition.getId());
         psMessages.setInt(2,category.getId());
         psMessages.execute();
@@ -153,7 +153,7 @@ public class EditionManager {
         boolean added=false;
         try{        
         String sql="INSERT INTO editie (id, data, note) VALUES (?, ?, ?)";
-        java.sql.PreparedStatement psEdition=vgrabber.db.Connection.GetConnection().prepareStatement(sql);
+        java.sql.PreparedStatement psEdition=vgrabber.db.Connection.getConnection().prepareStatement(sql);
         psEdition.setInt(1,edition.getId());
         psEdition.setString(2,(new java.sql.Date(edition.getDate().getTime())).toString());        
         psEdition.setString(3,edition.getNote());
@@ -171,7 +171,7 @@ public class EditionManager {
         boolean updated=false;
         try{        
         String sql="UPDATE editie SET data = ?, note = ? WHERE (id = ?)";
-        java.sql.PreparedStatement psEdition=vgrabber.db.Connection.GetConnection().prepareStatement(sql);        
+        java.sql.PreparedStatement psEdition=vgrabber.db.Connection.getConnection().prepareStatement(sql);        
         //psEdition.setString(1,(new java.sql.Date(System.currentTimeMillis())).toString());        
         psEdition.setString(1,(new java.sql.Date(edition.getDate().getTime())).toString());        
         psEdition.setString(2,edition.getNote());
@@ -189,9 +189,12 @@ public class EditionManager {
     public static boolean DelEdition(Edition edition){        
         boolean deleted=false;
         try{        
-        String sql="delete editie WHERE (id = ?)";
-        java.sql.PreparedStatement psEdition=vgrabber.db.Connection.GetConnection().prepareStatement(sql);        
+        String sql="DELETE FROM  contact_anunt WHERE anunt_id IN (SELECT id FROM anunt WHERE anunt.editie_id = ?) DELETE FROM anunt WHERE (editie_id = ?) DELETE FROM editie WHERE (id = ?)";        
+        java.sql.PreparedStatement psEdition=vgrabber.db.Connection.getConnection().prepareStatement(sql);        
         psEdition.setInt(1,edition.getId());
+        psEdition.setInt(2,edition.getId());
+        psEdition.setInt(3,edition.getId());
+        System.out.println(sql);        
         psEdition.execute();
         deleted=true;
         }

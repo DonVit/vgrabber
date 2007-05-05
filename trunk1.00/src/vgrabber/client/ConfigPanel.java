@@ -145,7 +145,7 @@ public class ConfigPanel extends JPanel implements java.awt.event.ActionListener
         passwordcons.setWidth(Spring.constant(textfieldwidth));               
         centerpanel.add(password);
 
-        createdatabaselable=new javax.swing.JLabel("Create DataBase:");  
+        createdatabaselable=new javax.swing.JLabel("Create DataBase Objects:");  
         createdatabaselable.setHorizontalAlignment(javax.swing.JLabel.RIGHT);
         createdatabaselable.setVerticalAlignment(javax.swing.JLabel.CENTER);        
         SpringLayout.Constraints createdatabaselablecons=centerPanelLayout.getConstraints(createdatabaselable);
@@ -168,7 +168,7 @@ public class ConfigPanel extends JPanel implements java.awt.event.ActionListener
         savebuttoncons.setX(Spring.sum(Spring.constant(-buttonwidth),passwordcons.getConstraint(SpringLayout.EAST)));
         savebuttoncons.setY(Spring.sum(Spring.constant(sizebetweencomp*2),createdatabasecons.getConstraint(SpringLayout.SOUTH)));
         savebuttoncons.setWidth(Spring.constant(buttonwidth));               
-        centerpanel.add(savebutton);
+        centerpanel.add(savebutton);        
         
         this.add(this.centerpanel,java.awt.BorderLayout.CENTER);
     }
@@ -179,10 +179,19 @@ public class ConfigPanel extends JPanel implements java.awt.event.ActionListener
         cnf.setDataBase(this.dbname.getText());
         cnf.setUserName(this.username.getText());
         cnf.setPassword(this.password.getText());
+        
         if (vgrabber.config.ConfigManager.setConfig(cnf)) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Changes were saved succesfully");            
+            if (this.createdatabase.isSelected()){
+                if (vgrabber.db.DBManager.CreateDBObjects()){                    
+                    javax.swing.JOptionPane.showMessageDialog(this, "Changes were saved succesfully !");                                                        
+                } else {                                
+                    javax.swing.JOptionPane.showMessageDialog(this, "Error, DB Objects creation failed. Check logs for more info !");
+                }            
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Changes were saved succesfully !");
+            }
         } else {
-            javax.swing.JOptionPane.showMessageDialog(this, "Error, Changes weren't saved. Check logs for more info.");
+            javax.swing.JOptionPane.showMessageDialog(this, "Error, DB properties weren't saved. Check logs for more info !");
         }
     }
     

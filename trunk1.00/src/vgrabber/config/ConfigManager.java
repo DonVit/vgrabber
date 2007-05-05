@@ -24,10 +24,7 @@ public class ConfigManager {
         vgrabber.common.Config cnf=new vgrabber.common.Config();
         java.util.Properties prop=new java.util.Properties();        
         try {
-        //java.net.URL url = ConfigManager.class.getResource("Config.properties");
-        //java.io.File f=new java.io.File(url.toURI());
-        //java.io.FileInputStream fis=new java.io.FileInputStream(f);
-        java.io.FileInputStream fis=new java.io.FileInputStream("Config.properties");
+        java.io.FileInputStream fis=new java.io.FileInputStream("config/Config.properties");
         prop.load(fis);
         fis.close();
         cnf.setServerType(prop.getProperty("ServerType"));
@@ -37,8 +34,6 @@ public class ConfigManager {
         cnf.setPassword(prop.getProperty("Password"));
         } catch (java.io.IOException ioex){
             System.out.println(ioex);            
-        //} catch (java.net.URISyntaxException uriex){
-            //System.out.println(uriex);
         } finally {
         return cnf;
         }
@@ -52,21 +47,15 @@ public class ConfigManager {
         prop.setProperty("UserName",cnf.getUserName());
         prop.setProperty("Password",cnf.getPassword());               
         try {                
-        //java.net.URL url=ConfigManager.class.getResource("Config.properties");        
-        //java.io.File f=new java.io.File(url.toURI());        
-        java.io.File f=new java.io.File("Config.properties");                    
+        java.io.File f=new java.io.File("config/Config.properties");                    
         java.io.FileOutputStream fos=new java.io.FileOutputStream(f);                
-        prop.store(fos,"MGrabber Configs");
-        fos.close();
+        prop.store(fos,"VGrabber Configs");
+        fos.close();        
         } catch (java.io.IOException ioex){
             System.out.println(ioex);            
             result=false;
-        //} catch (java.net.URISyntaxException uriex){
-            //System.out.println(uriex);
-            //result=false;
         } finally {
-        return result;
-        }
-        
+            return result;
+        }        
     } 
 }

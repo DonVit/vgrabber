@@ -25,7 +25,7 @@ public class RegionManager {
     String sql="select id, name from regiune";
     regions.add(new Region(0,"All",new String[]{"0"}));
     try {
-    java.sql.PreparedStatement stRegions=vgrabber.db.Connection.GetConnection().prepareStatement(sql);    
+    java.sql.PreparedStatement stRegions=vgrabber.db.Connection.getConnection().prepareStatement(sql);    
     stRegions.execute();
     java.sql.ResultSet rsRegions=stRegions.getResultSet();
     

@@ -6,7 +6,7 @@ import vgrabber.common.Category;
 import vgrabber.common.Contact;
 
 public class CategoriesTableModel extends AbstractTableModel {
-        private String[] columnNames = {"ID","ParentID","To Download","Name"};
+        private String[] columnNames = {"ID","ParentID","To Download","Denumire"};
         private java.util.ArrayList<vgrabber.common.Category> data;
         public CategoriesTableModel(ArrayList<vgrabber.common.Category> categories) {
             data = categories;            

@@ -6,7 +6,7 @@ import vgrabber.common.Contact;
 import vgrabber.common.Edition;
 
 public class EditionsTableModel extends AbstractTableModel {
-        private String[] columnNames = {"ID","Date","Note","Download"};
+        private String[] columnNames = {"NR","ID","Date","Note"};
         private java.util.ArrayList<vgrabber.common.Edition> data;
         public EditionsTableModel(ArrayList<vgrabber.common.Edition> editions) {
             data = editions;            
@@ -25,10 +25,10 @@ public class EditionsTableModel extends AbstractTableModel {
 
         public Object getValueAt(int row, int col) {
             switch (col){
-            case 0:return ((Edition)data.get(row)).getId();                
-            case 1:return ((Edition)data.get(row)).getDate();                
-            case 2:return ((Edition)data.get(row)).getNote();                            
-            case 3:return new Boolean(false);                                        
+            case 0:return row+1;                                
+            case 1:return ((Edition)data.get(row)).getId();                
+            case 2:return ((Edition)data.get(row)).getDate();                
+            case 3:return ((Edition)data.get(row)).getNote();                                                                              
             default:return ((Edition)data.get(row)).getId();
             }            
         }
@@ -45,9 +45,9 @@ public class EditionsTableModel extends AbstractTableModel {
         } 
                 
         public Class getClassName(int col){
-            //return this.getValueAt(0,col).getClass();
+            return this.getValueAt(0,col).getClass();
             //if (col==7)
-            return Boolean.class;
+            //return Boolean.class;
             //else 
             //return getValueAt(0, col).getClass();
         }

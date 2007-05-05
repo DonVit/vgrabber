@@ -99,13 +99,34 @@ public class Main {
         cnf.setPassword("pass");
         mgrabber.config.ConfigManager.setConfig(cnf);
          */
-        vgrabber.common.Edition e=vgrabber.grabber.Grabber.getEditionFromString("<option value =\"1617\">04.01.07 ?2 ??.</option>");
-        System.out.println(e.toString());
+        //vgrabber.common.Edition e=vgrabber.grabber.Grabber.getEditionFromString("<option value =\"1617\">04.01.07 ?2 ??.</option>");
+        //System.out.println(e.toString());
+        //boolean b=vgrabber.db.DBManager.CreateDBObjects();
+        /*
+        vgrabber.logger.Logger.getLogger().info("Info message");
+        vgrabber.logger.Logger.getLogger().config("Config message");
+        vgrabber.logger.Logger.getLogger().fine("Fine message");
+        vgrabber.logger.Logger.getLogger().finer("Finer message");
+        vgrabber.logger.Logger.getLogger().finest("Finest message");
+        vgrabber.logger.Logger.getLogger().severe("Severe message");
+        vgrabber.logger.Logger.getLogger().warning("Warning message");
+        java.util.logging.Logger lg=vgrabber.logger.Logger.getLogger();
+        lg.info("Ceva interesant");
+        */
+        //vgrabber.logger.Logger.getLogger().info("Start");
+        /*
+        vgrabber.client.WaitFrame wf=new vgrabber.client.WaitFrame();
+        wf.setVisible(true);
+        //wf.show();
+        try {
+            java.lang.Thread.sleep(5000);
+        } catch (java.lang.InterruptedException ex1) {        
+        }
+        wf.dispose();
+         */
+        vgrabber.logger.Logger.getLogger().info("Appliction started");                        
         vgrabber.client.MainFrame mf=new vgrabber.client.MainFrame();
-        mf.show();
-        
-        
-        
+        mf.setVisible(true);        
     }
     
 }

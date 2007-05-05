@@ -22,28 +22,15 @@ public class MainFrame extends JFrame implements ActionListener{
     private javax.swing.JPanel panel;
     private javax.swing.JTabbedPane tabbedpane;
     private javax.swing.JPanel statuspanel;
+    private javax.swing.JLabel wl;
     
     private vgrabber.client.MessagesPanel messagepanel=null;
     public MainFrame() {
-        //UIManager.setLookAndFeel()
-        //try {
-        //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);                
-        this.setTitle("MGrabber");
+        this.setTitle("VGrabber");
         this.init();
         this.pack();
-        this.setExtendedState(MAXIMIZED_BOTH);    
-        /*
-        } 
-        catch (java.lang.ClassNotFoundException ex){                    
-        }
-        catch (java.lang.InstantiationException ex1){                    
-        }
-        catch (java.lang.IllegalAccessException ex2){                    
-        }
-        catch (javax.swing.UnsupportedLookAndFeelException ex3){                    
-        }     
-         */           
+        this.setExtendedState(MAXIMIZED_BOTH);                        
     }
     private void init(){
         this.toolbar=new javax.swing.JToolBar();        
@@ -55,7 +42,7 @@ public class MainFrame extends JFrame implements ActionListener{
         javax.swing.Icon icon=new javax.swing.ImageIcon(imageURL);
         javax.swing.JButton button=new javax.swing.JButton(icon);        
         button.setName("Download");        
-        button.setToolTipText("Download");        
+        button.setToolTipText("Descarca");        
         button.addActionListener(this);        
         this.toolbar.add(button);
         
@@ -67,7 +54,7 @@ public class MainFrame extends JFrame implements ActionListener{
         icon=new javax.swing.ImageIcon(imageURL);
         button=new javax.swing.JButton(icon);        
         button.setName("View");        
-        button.setToolTipText("View");        
+        button.setToolTipText("Anunturi unicale");        
         button.addActionListener(this);        
         this.toolbar.add(button);
         
@@ -76,16 +63,27 @@ public class MainFrame extends JFrame implements ActionListener{
         icon=new javax.swing.ImageIcon(imageURL);
         button=new javax.swing.JButton(icon);        
         button.setName("Search");        
-        button.setToolTipText("Search");        
+        button.setToolTipText("Vizualizare");        
         button.addActionListener(this);        
         this.toolbar.add(button);
+        
+        //Filter button
+        /*
+        imageURL = MainFrame.class.getResource("images/filter.gif");                        
+        icon=new javax.swing.ImageIcon(imageURL);
+        button=new javax.swing.JButton(icon);        
+        button.setName("Filter");        
+        button.setToolTipText("Filtru");        
+        button.addActionListener(this);        
+        this.toolbar.add(button);   
+         */     
 
         //Favorits button
         imageURL = MainFrame.class.getResource("images/favorites.jpg");                        
         icon=new javax.swing.ImageIcon(imageURL);
         button=new javax.swing.JButton(icon);        
         button.setName("Favorites");        
-        button.setToolTipText("Favorites");        
+        button.setToolTipText("Favorite");        
         button.addActionListener(this);        
         this.toolbar.add(button);
         
@@ -97,7 +95,7 @@ public class MainFrame extends JFrame implements ActionListener{
         icon=new javax.swing.ImageIcon(imageURL);
         button=new javax.swing.JButton(icon);        
         button.setName("Categories");        
-        button.setToolTipText("Categories");        
+        button.setToolTipText("Categorii");        
         button.addActionListener(this);        
         this.toolbar.add(button);
         
@@ -106,7 +104,7 @@ public class MainFrame extends JFrame implements ActionListener{
         icon=new javax.swing.ImageIcon(imageURL);
         button=new javax.swing.JButton(icon);        
         button.setName("Configurations");        
-        button.setToolTipText("Configurations");        
+        button.setToolTipText("Configurari");        
         button.addActionListener(this);        
         this.toolbar.add(button);
 
@@ -118,21 +116,20 @@ public class MainFrame extends JFrame implements ActionListener{
         icon=new javax.swing.ImageIcon(imageURL);
         button=new javax.swing.JButton(icon);
         button.setName("Help");
-        button.setToolTipText("Help");        
+        button.setToolTipText("Ajutor");        
         button.addActionListener(this);
         this.toolbar.add(button);        
 
         //Separator
         this.toolbar.addSeparator();        
-        //Close button
+        //Close current tab
         imageURL = MainFrame.class.getResource("images/close.gif");                        
         icon=new javax.swing.ImageIcon(imageURL);
         button=new javax.swing.JButton(icon);
-        button.setName("Close");
-        button.setToolTipText("Close");        
+        button.setName("CloseTab");
+        button.setToolTipText("Inchide");        
         button.addActionListener(this);
-        this.toolbar.add(button);        
-        
+        this.toolbar.add(button);              
         
         this.panel=new javax.swing.JPanel(new java.awt.GridLayout(1,0));        
         this.tabbedpane=new javax.swing.JTabbedPane();                
@@ -142,8 +139,9 @@ public class MainFrame extends JFrame implements ActionListener{
         
         //Create and Add Status Bar
         this.statuspanel=new javax.swing.JPanel(new java.awt.GridLayout(1,0));        
-        this.statuspanel.add(new JLabel("Status Bar"));
-        
+        this.statuspanel.add(new JLabel("Bara de Stare:"));
+        wl=new javax.swing.JLabel();
+        this.statuspanel.add(wl);
         
         this.getContentPane().setLayout(new java.awt.BorderLayout());
         this.add(this.toolbar, java.awt.BorderLayout.PAGE_START);
@@ -151,49 +149,46 @@ public class MainFrame extends JFrame implements ActionListener{
         this.add(this.statuspanel, java.awt.BorderLayout.PAGE_END);
     }
     public void actionPerformed(ActionEvent e){
+
         if (((JButton)e.getSource()).getName()=="Download"){
-            this.addNewTab("Download",new DownloadPanel());
-            //this.tabbedpane.addTab("Search",this.messagepanel=new MessagesPanel());   
-            //this.tabbedpane.setSelectedIndex(this.tabbedpane.getTabCount()-1);
+            this.addTab("Descarca",new DownloadPanel(this));
         }        
         if (((JButton)e.getSource()).getName()=="Search"){
-            this.addNewTab("Search",new MessagesPanel());
-            //this.tabbedpane.addTab("Search",this.messagepanel=new MessagesPanel());   
-            //this.tabbedpane.setSelectedIndex(this.tabbedpane.getTabCount()-1);
+            this.addTab("Search",new MessagesPanel());
         }
         if (((JButton)e.getSource()).getName()=="View"){
-            this.addNewTab("View",new NewMessagesPanel());
-            //this.tabbedpane.addTab("Search",this.messagepanel=new MessagesPanel());   
-            //this.tabbedpane.setSelectedIndex(this.tabbedpane.getTabCount()-1);
+            this.addTab("View",new NewMessagesPanel());
         }     
         if (((JButton)e.getSource()).getName()=="Favorites"){
-            this.addNewTab("Favorites",new FavoritesPanel());
-            //this.tabbedpane.addTab("Search",this.messagepanel=new MessagesPanel());   
-            //this.tabbedpane.setSelectedIndex(this.tabbedpane.getTabCount()-1);
+            this.addTab("Favorites",new FavoritesPanel());
         }           
         if (((JButton)e.getSource()).getName()=="Categories"){
-            this.addNewTab("Categories",new CategoriesPanel());
-            //this.tabbedpane.addTab("Search",this.messagepanel=new MessagesPanel());   
-            //this.tabbedpane.setSelectedIndex(this.tabbedpane.getTabCount()-1);
+            this.addTab("Categories",new CategoriesPanel());
         }                   
         if (((JButton)e.getSource()).getName()=="Configurations"){
-            this.addNewTab("Configurations",new ConfigPanel());
-            //this.tabbedpane.addTab("Search",this.messagepanel=new MessagesPanel());   
-            //this.tabbedpane.setSelectedIndex(this.tabbedpane.getTabCount()-1);
+            this.addTab("Configurations",new ConfigPanel());
         }
         if (((JButton)e.getSource()).getName()=="Help"){
-            this.addNewTab("Help",new HelpPanel());
-            //this.tabbedpane.addTab("Search",this.messagepanel=new MessagesPanel());   
-            //this.tabbedpane.setSelectedIndex(this.tabbedpane.getTabCount()-1);
+            this.addTab("Help",new HelpPanel());
         }          
-        if (((JButton)e.getSource()).getName()=="Close"){            
-            if(javax.swing.JOptionPane.showConfirmDialog(null,"Are you sure you want to close application ?", "Exit",javax.swing.JOptionPane.YES_NO_OPTION)==0){
+        if (((JButton)e.getSource()).getName()=="CloseTab"){
+            this.remTab();
+        }                  
+      
+    }
+    public void addTab(String tabTitle, java.awt.Component component){
+        this.tabbedpane.addTab(tabTitle,component);   
+        this.tabbedpane.setSelectedIndex(this.tabbedpane.getTabCount()-1);             
+    }
+    public void remTab(){  
+        if (this.tabbedpane.getTabCount()!=0){
+            this.tabbedpane.remove(this.tabbedpane.getSelectedIndex());        
+        } else {
+           if(javax.swing.JOptionPane.showConfirmDialog(null,"Are you sure you want to close application ?", "Exit",javax.swing.JOptionPane.YES_NO_OPTION)==0){
+                vgrabber.logger.Logger.getLogger().info("Appliction cloesed");                                                        
                 System.exit(0);
-            }
-        }        
+            }            
+        }
     }
-    public void addNewTab(String tabTitle, java.awt.Component component){
-            this.tabbedpane.addTab(tabTitle,component);   
-            this.tabbedpane.setSelectedIndex(this.tabbedpane.getTabCount()-1);        
-    }
+
 }

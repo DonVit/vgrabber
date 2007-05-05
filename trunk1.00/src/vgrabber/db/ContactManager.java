@@ -26,7 +26,7 @@ public class ContactManager {
         Contact contact=null;
         try{        
         String sql="SELECT id, phone, note FROM contact WHERE (id = ?)";
-        java.sql.PreparedStatement psContact=vgrabber.db.Connection.GetConnection().prepareStatement(sql);
+        java.sql.PreparedStatement psContact=vgrabber.db.Connection.getConnection().prepareStatement(sql);
         psContact.setInt(1,id);
         psContact.execute();
         java.sql.ResultSet rsContact=psContact.getResultSet();
@@ -45,7 +45,7 @@ public class ContactManager {
         boolean result=false;
         try{        
         String sql="SELECT id, phone, note FROM contact WHERE (id = ?)";
-        java.sql.PreparedStatement psContact=vgrabber.db.Connection.GetConnection().prepareStatement(sql);
+        java.sql.PreparedStatement psContact=vgrabber.db.Connection.getConnection().prepareStatement(sql);
         psContact.setString(1,contact.getId());
         psContact.execute();
         java.sql.ResultSet rsContact=psContact.getResultSet();
@@ -65,7 +65,7 @@ public class ContactManager {
         ArrayList<Contact> contacts=new ArrayList<Contact>();
         try{        
         String sql="SELECT id, phone, note FROM contact WHERE (id = ?)";
-        java.sql.PreparedStatement psContact=vgrabber.db.Connection.GetConnection().prepareStatement(sql);
+        java.sql.PreparedStatement psContact=vgrabber.db.Connection.getConnection().prepareStatement(sql);
         psContact.setInt(1,message.getId());
         psContact.execute();
         java.sql.ResultSet rsContact=psContact.getResultSet();
@@ -85,7 +85,7 @@ public class ContactManager {
         boolean added=false;
         try{        
         String sql="insert into contact(id, phone, note) values(?,?,?)";
-        java.sql.PreparedStatement psContact=vgrabber.db.Connection.GetConnection().prepareStatement(sql);
+        java.sql.PreparedStatement psContact=vgrabber.db.Connection.getConnection().prepareStatement(sql);
         psContact.setString(1,contact.getId());
         psContact.setString(2,contact.getPhone());
         psContact.setString(3,contact.getNote());
@@ -103,7 +103,7 @@ public class ContactManager {
         boolean updated=false;
         try{        
         String sql="UPDATE contact SET id =?, phone =?, note =? WHERE (id = ?)";
-        java.sql.PreparedStatement psContact=vgrabber.db.Connection.GetConnection().prepareStatement(sql);                
+        java.sql.PreparedStatement psContact=vgrabber.db.Connection.getConnection().prepareStatement(sql);                
         psContact.setString(1,contact.getId());        
         psContact.setString(2,contact.getPhone());
         psContact.setString(3,contact.getNote());
@@ -122,7 +122,7 @@ public class ContactManager {
         boolean deleted=false;
         try{        
         String sql="delete contact WHERE (id = ?)";
-        java.sql.PreparedStatement psContact=vgrabber.db.Connection.GetConnection().prepareStatement(sql);        
+        java.sql.PreparedStatement psContact=vgrabber.db.Connection.getConnection().prepareStatement(sql);        
         psContact.setString(1,contact.getId());
         psContact.execute();
         deleted=true;

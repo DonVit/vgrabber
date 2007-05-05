@@ -5,7 +5,7 @@ import javax.swing.table.*;
 import vgrabber.common.Contact;
 
 public class ContactsTableModel extends AbstractTableModel {
-        private String[] columnNames = {"ID","Name"};
+        private String[] columnNames = {"ID","Telefon","Nota"};
         private java.util.ArrayList<vgrabber.common.Contact> data;
         public ContactsTableModel(ArrayList<vgrabber.common.Contact> contacts) {
             data = contacts;            
@@ -26,6 +26,7 @@ public class ContactsTableModel extends AbstractTableModel {
             switch (col){
             case 0:return ((Contact)data.get(row)).getId();                
             case 1:return ((Contact)data.get(row)).getPhone();                
+            case 2:return ((Contact)data.get(row)).getNote();                            
             default:return ((Contact)data.get(row)).getId();
             }            
         }

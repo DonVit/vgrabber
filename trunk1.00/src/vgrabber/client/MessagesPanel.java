@@ -45,6 +45,7 @@ public class MessagesPanel extends javax.swing.JPanel{
     
     private ArrayList<vgrabber.common.Message> messages=null;
     private ArrayList<vgrabber.common.Contact> contacts=null;
+    private ArrayList<vgrabber.common.Message> contactmessages=null;
     private String title=null;
 
     public MessagesPanel() {
@@ -54,49 +55,21 @@ public class MessagesPanel extends javax.swing.JPanel{
 
     public void init(){  
         //Filter Panel        
-        //SpringLayout filterPanelLayout=new javax.swing.SpringLayout();
-        //JPanel filterpanel1=new JPanel(new java.awt.BorderLayout());                
-        //JPanel filterpanel=new JPanel(new java.awt.BorderLayout());                
-        //filterpanel=new JPanel(filterPanelLayout);                
-        filterpanel=new JPanel(new GridLayout(0,8));                        
-        //filterpanel.setSize(50, 500);
-        filterpanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Filtru:"));   
-        //filterPanelLayout.putConstraint(SpringLayout.SOUTH,10,filterpanel,SpringLayout.SOUTH);
+        filterpanel=new JPanel(new GridLayout(0,8));                                
+        filterpanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Filtru:"));          
         
         //Edition
         editionlabel=new JLabel("Editie: ");
         editionlabel.setHorizontalAlignment(javax.swing.JLabel.RIGHT);        
-        //SpringLayout.Constraints editionlabelCons = filterPanelLayout.getConstraints(editionlabel);
-        //editionlabelCons.setX(Spring.constant(5));
-        //editionlabelCons.setY(Spring.constant(1));                
         filterpanel.add(this.editionlabel);        
         
         this.editioncombobox=new JComboBox();        
         for (vgrabber.common.Edition ed:vgrabber.db.EditionManager.GetAllEditions()){
             this.editioncombobox.addItem(ed);
         }        
-        this.editioncombobox.addActionListener(new ComboBoxOnChange(this));        
-        //SpringLayout.Constraints editioncomboboxCons = filterPanelLayout.getConstraints(editioncombobox);
-        //editioncomboboxCons.setX(Spring.sum(Spring.constant(5), editionlabelCons.getConstraint(SpringLayout.EAST)));
-        
-        //editioncomboboxCons.setHeight(Spring.constant(50));
-        //editioncomboboxCons.setY(Spring.constant(1));                
-
-        
-        //SpringLayout.Constraints pCons = layout.getConstraints(filterpanel);
-
-        //SpringLayout.Constraints filterpanelCons = filterPanelLayout.getConstraint(filterpanel);
-        //filterpanelCons.setY(100);
-        
-        
+        this.editioncombobox.addActionListener(new ComboBoxOnChange(this));                
         this.filterpanel.add(this.editioncombobox);
-        //filterpanel.add(this.filterpanel);
-        
-        
-
-
-        
-        
+       
         //Category
         this.categorylabel=new JLabel("Categorie: ");
         this.categorylabel.setHorizontalAlignment(javax.swing.JLabel.RIGHT);        
@@ -105,19 +78,22 @@ public class MessagesPanel extends javax.swing.JPanel{
         for (vgrabber.common.Category category:vgrabber.db.CategoryManager.getCategoriesToDownload()){
             this.categorycombobox.addItem(category);
         }        
+        this.categorycombobox.addActionListener(new ComboBoxOnChange(this));  
         this.filterpanel.add(this.categorycombobox);
         
         //Region
+        
         this.regionlabel=new JLabel("Regiune: ");
         this.regionlabel.setHorizontalAlignment(javax.swing.JLabel.RIGHT);        
+        this.regionlabel.setEnabled(false);
         this.filterpanel.add(this.regionlabel);
         this.regioncombobox=new JComboBox();
         for (vgrabber.common.Region region:vgrabber.db.RegionManager.getRegions()){
             this.regioncombobox.addItem(region);
         }        
+        this.regioncombobox.setEnabled(false);
         this.filterpanel.add(this.regioncombobox);
-        
-                
+                                
         //Messages Panel        
         this.messagespanel=new JPanel(new GridLayout(1,0));
         this.messagespanel.setBorder(BorderFactory.createTitledBorder("Anunturi:"));                
@@ -150,26 +126,11 @@ public class MessagesPanel extends javax.swing.JPanel{
         this.contactmessagestablescrollpane=new JScrollPane(this.contactmessagestable);                        
         this.contactmessagestablescrollpane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);                
         this.contactmessagespanel.add(this.contactmessagestablescrollpane);
-                       
-        
+                               
         this.toppanel=new javax.swing.JPanel(new java.awt.BorderLayout());
         this.toppanel.add(filterpanel, BorderLayout.NORTH);
         this.toppanel.add(this.messagespanel, BorderLayout.CENTER);
-        
-        //this.toppanel=new javax.swing.JPanel(new javax.swing.SpringLayout());
-        //this.toppanel.add(filterpanel);
-        //this.toppanel.add(this.messagespanel);
-        
-
-        //this.toppanel=new javax.swing.JPanel();
-        //this.toppanel.add(filterpanel);
-        //this.toppanel.add(this.messagespanel);
-        
-        //this.toppanel=new javax.swing.JPanel(new GridLayout(0,1));
-        //this.toppanel.add(filterpanel);
-        //this.toppanel.add(this.messagespanel);
-
-        
+                
         this.splitpanebottom=new javax.swing.JSplitPane(javax.swing.JSplitPane.VERTICAL_SPLIT);
         this.splitpanebottom.setTopComponent(this.contactspanel);
         this.splitpanebottom.setBottomComponent(this.contactmessagespanel);
@@ -180,32 +141,45 @@ public class MessagesPanel extends javax.swing.JPanel{
         this.splitpane.setBottomComponent(this.splitpanebottom);
         this.splitpane.setResizeWeight(0.5);
         
-        this.fillMessagesTable();
+        this.fillMessagesTable();        
         
         this.add(this.splitpane);        
     }
 
     private void fillMessagesTable(){
-        this.messages=vgrabber.db.MessageManager.GetMessagesByEditon(((vgrabber.common.Edition)editioncombobox.getSelectedItem()));                                
+        this.messages=vgrabber.db.MessageManager.GetMessagesByEditonAndCategory(((vgrabber.common.Edition)editioncombobox.getSelectedItem()),((vgrabber.common.Category)categorycombobox.getSelectedItem()));                                
         this.messagestable.setModel(new vgrabber.client.MessagesTableModel(messages));
         this.messagestable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);        
         this.messagestable.getColumnModel().getColumn(0).setMaxWidth(60);                       
         this.messagestable.getColumnModel().getColumn(1).setMaxWidth(60);          
-        this.messagestable.getColumnModel().getColumn(2).setMaxWidth(60);        
-        this.messagestable.getSelectionModel().setSelectionInterval(0,0);
+        this.messagestable.getColumnModel().getColumn(2).setMaxWidth(60); 
+        if (this.messages.size()>0){
+            this.messagestable.getSelectionModel().setSelectionInterval(0,0);
+        }
+        
     }
     private void fillContactsTable(vgrabber.common.Message message){   
         this.contacts=message.getContacts();
         this.contactstable.setModel(new vgrabber.client.ContactsTableModel(this.contacts));
         this.contactstable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        this.contactstable.getColumnModel().getColumn(0).setMaxWidth(80);                                  
+        this.contactstable.getColumnModel().getColumn(0).setMaxWidth(80);     
+        this.contactstable.getColumnModel().getColumn(1).setMinWidth(100);    
+        this.contactstable.getColumnModel().getColumn(1).setMaxWidth(140);    
+        if (this.contacts.size()>0){
+            this.contactstable.getSelectionModel().setSelectionInterval(0,0);
+        }
     }    
     private void fillContactMessagesTable(vgrabber.common.Contact contact){            
-         this.contactmessagestable.setModel(new vgrabber.client.ContactMessagesTabelModel(vgrabber.db.MessageManager.GetMessagesByContact(contact)));
+         this.contactmessages=vgrabber.db.MessageManager.GetMessagesByContact(contact);
+         this.contactmessagestable.setModel(new vgrabber.client.ContactMessagesTabelModel(this.contactmessages));
          this.contactmessagestable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);        
-         this.contactmessagestable.getColumnModel().getColumn(0).setMaxWidth(80);                       
-         this.contactmessagestable.getColumnModel().getColumn(1).setMaxWidth(80);      
-         this.contactmessagestable.getColumnModel().getColumn(2).setMaxWidth(80);      
+         this.contactmessagestable.getColumnModel().getColumn(0).setMaxWidth(30);                       
+         this.contactmessagestable.getColumnModel().getColumn(1).setMaxWidth(40);      
+         this.contactmessagestable.getColumnModel().getColumn(2).setMaxWidth(40);      
+         this.contactmessagestable.getColumnModel().getColumn(3).setMaxWidth(100);      
+         if (this.contactmessages.size()>0){
+            this.contactmessagestable.getSelectionModel().setSelectionInterval(0,0);
+         }
     }     
     class MessageSelectionListener implements javax.swing.event.ListSelectionListener {
         private MessagesPanel msgp;
@@ -216,14 +190,9 @@ public class MessagesPanel extends javax.swing.JPanel{
                     if (e.getValueIsAdjusting()) return;
 
                     ListSelectionModel lsm = (ListSelectionModel)e.getSource();
-                    if (lsm.isSelectionEmpty()) {
-                        System.out.println("No rows are selected.");
-                    } else {                        
+                    if (!lsm.isSelectionEmpty()) {
                         int selectedRow = lsm.getMinSelectionIndex();                        
-                        msgp.fillContactsTable(msgp.messages.get(selectedRow));                        
-                        msgp.contactstable.getSelectionModel().setSelectionInterval(0,0);
-                        int value=msgp.messages.get(selectedRow).getId();                        
-                        System.out.println("Row " + selectedRow+ " is now selected. ID is "+value);            
+                        msgp.fillContactsTable(msgp.messages.get(selectedRow));                                                
                     }
         }
     }
@@ -235,14 +204,10 @@ public class MessagesPanel extends javax.swing.JPanel{
         }
         public void valueChanged(ListSelectionEvent e){
                     if (e.getValueIsAdjusting()) return;
-
                     ListSelectionModel lsm = (ListSelectionModel)e.getSource();
-                    if (lsm.isSelectionEmpty()) {
-                        System.out.println("No rows are selected.");
-                    } else {                        
+                    if (!lsm.isSelectionEmpty()) {
                         int selectedRow = lsm.getMinSelectionIndex();                        
-                        msgp.fillContactMessagesTable(msgp.contacts.get(selectedRow));                        
-                        msgp.contactmessagestable.getSelectionModel().setSelectionInterval(0,0);
+                        msgp.fillContactMessagesTable(msgp.contacts.get(selectedRow));                                                
                     }
         }
     }    

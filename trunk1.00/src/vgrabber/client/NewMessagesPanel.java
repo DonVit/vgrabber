@@ -63,18 +63,23 @@ public class NewMessagesPanel extends  javax.swing.JPanel {
         this.categorycombobox=new JComboBox();
         for (vgrabber.common.Category category:vgrabber.db.CategoryManager.getCategoriesToDownload()){
             this.categorycombobox.addItem(category);
-        }        
+        }  
+        this.categorycombobox.addActionListener(new ComboBoxOnChange(this));
         this.filterpanel.add(this.categorycombobox);
         
         //Region
-        this.regionlabel=new JLabel("Regiune: ");
+        
+        this.regionlabel=new JLabel("Regiune: ");        
         this.regionlabel.setHorizontalAlignment(javax.swing.JLabel.RIGHT);        
+        this.regionlabel.setEnabled(false);
         this.filterpanel.add(this.regionlabel);
         this.regioncombobox=new JComboBox();
         for (vgrabber.common.Region region:vgrabber.db.RegionManager.getRegions()){
             this.regioncombobox.addItem(region);
         }        
+        this.regioncombobox.setEnabled(false);
         this.filterpanel.add(this.regioncombobox);
+         
         
         //Messages Table
         this.messagestable=new JTable();
@@ -92,7 +97,7 @@ public class NewMessagesPanel extends  javax.swing.JPanel {
         this.add(this.messagespanel, java.awt.BorderLayout.CENTER);
     }
     private void fillMessagesTable(){
-        this.messages=vgrabber.db.MessageManager.GetNewMessagesByEditon(((vgrabber.common.Edition)editioncombobox.getSelectedItem()));                                
+        this.messages=vgrabber.db.MessageManager.GetNewMessagesByEditon(((vgrabber.common.Edition)editioncombobox.getSelectedItem()),((vgrabber.common.Category)categorycombobox.getSelectedItem()));                                
         this.messagestable.setModel(new vgrabber.client.MessagesTableModel(messages));
         this.messagestable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);        
         this.messagestable.getColumnModel().getColumn(0).setMaxWidth(60);                       

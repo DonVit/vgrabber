@@ -4,7 +4,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MessagesTableModel extends AbstractTableModel {
-        private String[] columnNames = {"NR","ID","Favorite","Name"};
+        private String[] columnNames = {"NR","ID","Favorite","Anunt"};
         private java.util.ArrayList<vgrabber.common.Message> data;
         public MessagesTableModel(ArrayList<vgrabber.common.Message> messages) {
             data = messages;            
@@ -50,6 +50,6 @@ public class MessagesTableModel extends AbstractTableModel {
         }
         */
         public boolean isCellEditable(int row, int col){
-            return (col==2)?true:false;
+            return ((col==2)||(col==3))?true:false;
         }
 }

@@ -17,7 +17,7 @@ import javax.swing.table.*;
  * @author vdoni
  */
 public class ContactMessagesTabelModel extends AbstractTableModel {
-    private String[] columnNames = {"NR","ID","Editie","Name"};
+    private String[] columnNames = {"NR","ID","Editie","Categorie","Anunt"};
     private ArrayList<vgrabber.common.Message> messages;
     public ContactMessagesTabelModel(ArrayList<vgrabber.common.Message> messages) {
         this.messages=messages;
@@ -33,7 +33,8 @@ public class ContactMessagesTabelModel extends AbstractTableModel {
             case 0:return row+1;                
             case 1:return messages.get(row).getId();                
             case 2:return messages.get(row).getEdition_id();                
-            case 3:return messages.get(row).getAnunt();                            
+            case 3:return vgrabber.db.CategoryManager.getCategory(messages.get(row).getCategory_id()).getName();                            
+            case 4:return messages.get(row).getAnunt();                            
             default:return messages.get(row).getId();
             }       
     }

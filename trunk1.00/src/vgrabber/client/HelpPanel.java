@@ -9,7 +9,9 @@
 
 package vgrabber.client;
 
+import java.awt.Font;
 import javax.swing.*;
+import java.awt.Font.*;
 /**
  *
  * @author VDoni
@@ -18,16 +20,39 @@ import javax.swing.*;
 
 public class HelpPanel extends JPanel{
     
-    /** Creates a new instance of HelpPanel */
-    private javax.swing.JLabel help=null;    
+    /** Creates a new instance of HelpPanel */    
+    private javax.swing.JLabel helpbody=null;    
     public HelpPanel() {
-        this.setBorder(javax.swing.BorderFactory.createTitledBorder("About application:"));
+        this.setLayout(new java.awt.BorderLayout());
+        this.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         this.init();
     }
     public void init() {
-        help=new javax.swing.JLabel();
-        help.setText("When you have time add please some help here.");        
-        add(help);
+        helpbody=new javax.swing.JLabel();
+        helpbody.setVerticalAlignment(javax.swing.JLabel.TOP);
+ 
+        String html="<html>"+
+        "  <body>"+
+        "    <font size=+1>Constatari facute consultind Maklerul:</font>"+
+        "    <ul>"+
+        "    <li><font color=\"blue\">Mai mult de 60% din anunturile din Makler se repeta.</font>"+
+        "    <li><font color=\"blue\">Multi din cei ce publica fac speculatii.</font>"+
+        "    </ul>"+
+        "    <font size=+1>Apare necesitatea de a vedea:</font>"+
+        "    <ul>"+
+        "    <li><font color=\"blue\">Doar anunturile noi aparute intr-o perioada anumita.</font>"+
+        "    <li><font color=\"blue\">De vazut mai multa informatie despre cel ce ofera/cere.</font>"+
+        "    </ul>    "+
+        "    <font size=+1>Aceasta aplicatie ofera aceste doua necesitati.</font>    "+
+        "    <ul>"+
+        "    Autor:Vitalie Doni <a href=\"mailo:vitalie.doni@gmail.com\">vitalie.doni@gmail.com</a>"+                
+        "    </ul>"+
+        "  </body>"+
+        "</html>";
+        
+        helpbody.setText(html);
+        helpbody.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        add(helpbody, java.awt.BorderLayout.CENTER);
     }
     
 }
