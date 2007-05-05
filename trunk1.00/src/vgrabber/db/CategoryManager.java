@@ -81,6 +81,14 @@ public class CategoryManager {
         return categories;        
         }
     }    
+    public static boolean exists(Category category){
+        Category cat=getCategory(category.getId());
+        if (cat==null){
+            return false;
+        } else {
+            return true;
+        }
+    }
     public static Category getCategory(int category_id){
         Category category=null;
         try{        
@@ -98,15 +106,43 @@ public class CategoryManager {
         }                    
         return category;                
     }        
-    public static boolean UpdCategory(Category category){        
+    public static boolean addCategory(Category category){        
+        boolean added=false;
+        if (exists(category)){
+            updCategory(category);
+        } else {                    
+            try{        
+                String sql="INSERT INTO categorie (id, parent_id, nume) VALUES (?,?,?)";
+                java.sql.PreparedStatement psCategory=vgrabber.db.Connection.getConnection().prepareStatement(sql);                
+            
+                psCategory.setInt(1,category.getId());
+                if (category.getParentId()==0) {
+                    psCategory.setNull(2,java.sql.Types.INTEGER);
+                } else {
+                    psCategory.setInt(2,category.getParentId());
+                }
+                psCategory.setString(3,category.getName());    
+                psCategory.execute();
+                added=true;
+            } catch (java.sql.SQLException ex){
+                System.out.println(ex.toString());
+            }        
+        }
+        return added;        
+    }    
+    public static boolean updCategory(Category category){        
         boolean updated=false;
         try{        
-        String sql="UPDATE categorie SET nume=?, toupdate =? WHERE (id = ?)";
-        java.sql.PreparedStatement psCategory=vgrabber.db.Connection.getConnection().prepareStatement(sql);                
-            
-        psCategory.setString(1,category.getName());
-        psCategory.setBoolean(2,category.getToUpdate());
-        psCategory.setInt(3,category.getId());    
+        String sql="UPDATE categorie SET parent_id=?, nume=?, toupdate =? WHERE (id = ?)";
+        java.sql.PreparedStatement psCategory=vgrabber.db.Connection.getConnection().prepareStatement(sql);                        
+        if (category.getParentId()==0){
+            psCategory.setNull(1,java.sql.Types.INTEGER);            
+        } else {
+            psCategory.setInt(1,category.getParentId());               
+        }        
+        psCategory.setString(2,category.getName());
+        psCategory.setBoolean(3,category.getToUpdate());
+        psCategory.setInt(4,category.getId());    
         psCategory.execute();
         updated=true;
         }

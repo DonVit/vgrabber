@@ -38,7 +38,7 @@ public class CategoriesTableModel extends AbstractTableModel {
             case 2:((vgrabber.common.Category)data.get(row)).setToUpdate((Boolean)value);                                    
             //case 3:((mgrabber.common.Category)data.get(row)).setName((String)value);                                                
             } 
-            vgrabber.db.CategoryManager.UpdCategory(((vgrabber.common.Category)data.get(row)));
+            vgrabber.db.CategoryManager.updCategory(((vgrabber.common.Category)data.get(row)));
         }
         
         public Class getColumnClass(int c) {

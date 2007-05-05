@@ -25,7 +25,7 @@ public class MessageManager {
     /** Creates a new instance of MessageManager */
     public MessageManager() {
     }
-    public static ArrayList<Message> GetMessage(int id){
+    public static ArrayList<Message> getMessage(int id){
         ArrayList<Message> messages=new ArrayList<Message>();
         try{        
         String sql="SELECT id, message, editie_id, categorie_id, interested FROM anunt WHERE (id = ?)";
@@ -45,7 +45,26 @@ public class MessageManager {
             return messages;
         }
     }
-    public static ArrayList<Message> GetMessagesByContact(Contact contact){
+    public static ArrayList<Message> getMessage(){
+        ArrayList<Message> messages=new ArrayList<Message>();
+        try{        
+        String sql="SELECT id, anunt, editie_id, categorie_id, interested FROM anunt where price=''";
+        java.sql.PreparedStatement psMessages=vgrabber.db.Connection.getConnection().prepareStatement(sql);        
+        psMessages.execute();
+        java.sql.ResultSet rsMessages=psMessages.getResultSet();        
+        while (rsMessages.next()){        
+        Message message=new Message(rsMessages.getInt("id"),rsMessages.getString("anunt"),rsMessages.getInt("editie_id"),rsMessages.getInt("categorie_id"),rsMessages.getBoolean("interested"));        
+        messages.add(message);
+        }
+        }
+        catch (java.sql.SQLException ex){
+            System.out.println(ex.toString());
+        }
+        finally{            
+            return messages;
+        }
+    }    
+    public static ArrayList<Message> getMessagesByContact(Contact contact){
         ArrayList<Message> messages=new ArrayList<Message>();
         try{        
         String sql="SELECT anunt.id, anunt.editie_id, anunt.categorie_id, categorie.nume AS categorie_nume, anunt.anunt, anunt.interested FROM anunt INNER JOIN contact_anunt ON anunt.id = contact_anunt.anunt_id INNER JOIN categorie ON anunt.categorie_id = categorie.id WHERE (contact_anunt.contact_id = ?) ORDER BY anunt.editie_id DESC";
@@ -65,7 +84,7 @@ public class MessageManager {
             return messages;
         }
     }    
-    public static ArrayList<Message> GetMessagesByEditon(Edition edition){
+    public static ArrayList<Message> getMessagesByEditon(Edition edition){
         ArrayList<Message> messages=new ArrayList<Message>();
         try{        
         String sql="SELECT id, categorie_id, anunt, interested FROM anunt WHERE editie_id = ?";
@@ -85,7 +104,7 @@ public class MessageManager {
             return messages;
         }
     }    
-    public static ArrayList<Message> GetMessagesByEditonAndCategory(Edition edition, Category category){
+    public static ArrayList<Message> getMessagesByEditonAndCategory(Edition edition, Category category){
         ArrayList<Message> messages=new ArrayList<Message>();
         try{        
         String sql="SELECT id, categorie_id, anunt, interested FROM anunt WHERE editie_id = ? and categorie_id=?";
@@ -106,7 +125,33 @@ public class MessageManager {
             return messages;
         }
     }        
-    public static ArrayList<Message> GetNewMessagesByEditon(Edition edition, Category category){
+    public static ArrayList<Message> searchMessages(String criteria){
+        ArrayList<Message> messages=new ArrayList<Message>();
+        try{
+            if (criteria.trim().length()!=0){                
+                String sql="SELECT anunt.id, anunt.editie_id, anunt.categorie_id, categorie.nume AS categorie_nume, anunt.anunt, anunt.interested FROM anunt INNER JOIN contact_anunt ON anunt.id = contact_anunt.anunt_id INNER JOIN categorie ON anunt.categorie_id = categorie.id WHERE ? ORDER BY anunt.editie_id DESC";            
+                String[] criterias=criteria.split(",");
+                for (int i=0;i<criterias.length-1;i++){
+                    sql=sql.replace("?","(anunt.anunt like N'%"+criterias[i].trim()+"%') OR ?");
+                }
+                sql=sql.replace("?","(anunt.anunt like N'%"+criterias[criterias.length-1].trim()+"%')");
+                java.sql.PreparedStatement psMessages=vgrabber.db.Connection.getConnection().prepareStatement(sql);
+                psMessages.execute();
+                java.sql.ResultSet rsMessages=psMessages.getResultSet();
+                while (rsMessages.next()){        
+                    Message message=new Message(rsMessages.getInt("id"),rsMessages.getString("anunt"),rsMessages.getInt("editie_id"),rsMessages.getInt("categorie_id"),rsMessages.getBoolean("interested"));        
+                    messages.add(message);
+                }
+            }
+        }
+        catch (java.sql.SQLException ex){
+            System.out.println(ex.toString());
+        }
+        finally{            
+            return messages;
+        }
+    }        
+    public static ArrayList<Message> getNewMessagesByEditon(Edition edition, Category category){
         ArrayList<Message> messages=new ArrayList<Message>();
         try{        
         //String sql="select tb1.id, (select categorie_id from anunt where id=tb1.id)as categorie_id, (select anunt from anunt where id=tb1.id )as anunt, (select interested from anunt where id=tb1.id )as interested from (select anunt.id, contact_anunt.contact_id from anunt inner join contact_anunt on anunt.id=contact_anunt.anunt_id where editie_id=?) tb1 where tb1.contact_id not in (select contact_anunt.contact_id from anunt inner join contact_anunt on anunt.id=contact_anunt.anunt_id where editie_id<>?) group by tb1.id";     
@@ -131,7 +176,7 @@ public class MessageManager {
             return messages;
         }
     }        
-    public static ArrayList<Message> GetFavoriteMessages(){
+    public static ArrayList<Message> getFavoriteMessages(){
         ArrayList<Message> messages=new ArrayList<Message>();
         try{        
         String sql="SELECT id, editie_id, categorie_id, anunt,interested FROM anunt WHERE interested = 1";
@@ -150,7 +195,7 @@ public class MessageManager {
             return messages;
         }
     }            
-    public static Message AddMessage(Message message){                
+    public static Message addMessage(Message message){                
         try{        
         String sql="INSERT INTO anunt (editie_id, categorie_id, anunt) VALUES (?, ?, ?)";
         java.sql.PreparedStatement psMessage=vgrabber.db.Connection.getConnection().prepareStatement(sql);
@@ -168,8 +213,8 @@ public class MessageManager {
         
         // Add Message Contacts           
         for (Contact contact:message.getContacts()){
-            if (!vgrabber.db.ContactManager.ContactExists(contact))
-            vgrabber.db.ContactManager.AddContact(contact);
+            if (!vgrabber.db.ContactManager.exists(contact))
+            vgrabber.db.ContactManager.addContact(contact);
             sql="INSERT INTO contact_anunt (contact_id, anunt_id) VALUES (?,?)";
             java.sql.PreparedStatement psContact=vgrabber.db.Connection.getConnection().prepareStatement(sql);
             psContact.setString(1,contact.getId());
@@ -185,16 +230,17 @@ public class MessageManager {
             return message;
         }        
     }
-    public static boolean UpdMessage(Message message){        
+    public static boolean updMessage(Message message){        
         boolean updated=false;
         try{        
-        String sql="UPDATE anunt SET editie_id =?, categorie_id =?, anunt =?, interested=? WHERE (id = ?)";
+        String sql="UPDATE anunt SET editie_id =?, categorie_id =?, anunt =?, interested=?, price=? WHERE (id = ?)";
         java.sql.PreparedStatement psMessage=vgrabber.db.Connection.getConnection().prepareStatement(sql);                
         psMessage.setInt(1,message.getEdition_id());        
         psMessage.setInt(2,message.getCategory_id());
         psMessage.setString(3,message.getAnunt());
         psMessage.setBoolean(4,message.getInterested());        
-        psMessage.setInt(5,message.getId());
+        psMessage.setString(5, message.getPrice());        
+        psMessage.setInt(6,message.getId());        
         psMessage.execute();
 
         //Remove Message Contacts
@@ -205,8 +251,8 @@ public class MessageManager {
         
         // Add Message Contacts           
         for (Contact contact:message.getContacts()){
-            if (!vgrabber.db.ContactManager.ContactExists(contact))
-            vgrabber.db.ContactManager.AddContact(contact);
+            if (!vgrabber.db.ContactManager.exists(contact))
+            vgrabber.db.ContactManager.addContact(contact);
             sql="INSERT INTO contact_anunt (contact_id, anunt_id) VALUES (?,?)";
             java.sql.PreparedStatement psContact=vgrabber.db.Connection.getConnection().prepareStatement(sql);
             psContact.setString(1,contact.getId());
@@ -223,10 +269,15 @@ public class MessageManager {
             return updated;
         }        
     }
-    public static boolean DelMessage(Message message){        
+    public static boolean delMessage(Message message){        
         boolean deleted=false;
-        try{        
-        String sql="delete anunt WHERE (id = ?)";
+        try{     
+        String sql="delete FROM contact_anunt WHERE (anunt_id = ?)";
+        java.sql.PreparedStatement psMessageAnunt=vgrabber.db.Connection.getConnection().prepareStatement(sql);        
+        psMessageAnunt.setInt(1,message.getId());
+        psMessageAnunt.execute();
+            
+        sql="delete anunt WHERE (id = ?)";
         java.sql.PreparedStatement psMessage=vgrabber.db.Connection.getConnection().prepareStatement(sql);        
         psMessage.setInt(1,message.getId());
         psMessage.execute();

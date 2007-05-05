@@ -97,7 +97,7 @@ public class NewMessagesPanel extends  javax.swing.JPanel {
         this.add(this.messagespanel, java.awt.BorderLayout.CENTER);
     }
     private void fillMessagesTable(){
-        this.messages=vgrabber.db.MessageManager.GetNewMessagesByEditon(((vgrabber.common.Edition)editioncombobox.getSelectedItem()),((vgrabber.common.Category)categorycombobox.getSelectedItem()));                                
+        this.messages=vgrabber.db.MessageManager.getNewMessagesByEditon(((vgrabber.common.Edition)editioncombobox.getSelectedItem()),((vgrabber.common.Category)categorycombobox.getSelectedItem()));                                
         this.messagestable.setModel(new vgrabber.client.MessagesTableModel(messages));
         this.messagestable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);        
         this.messagestable.getColumnModel().getColumn(0).setMaxWidth(60);                       

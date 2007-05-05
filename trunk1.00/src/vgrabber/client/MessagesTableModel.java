@@ -34,7 +34,7 @@ public class MessagesTableModel extends AbstractTableModel {
             switch (col){                        
             case 2:((vgrabber.common.Message)data.get(row)).setInterested((Boolean)value);                                    
             }      
-            vgrabber.db.MessageManager.UpdMessage(((vgrabber.common.Message)data.get(row)));
+            vgrabber.db.MessageManager.updMessage(((vgrabber.common.Message)data.get(row)));
         }
         
         public Class getColumnClass(int c) {

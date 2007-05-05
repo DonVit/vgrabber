@@ -49,12 +49,22 @@ public class MainFrame extends JFrame implements ActionListener{
         //Separator
         this.toolbar.addSeparator();        
 
+        //Filter button
+        
+        imageURL = MainFrame.class.getResource("images/filter.gif");                        
+        icon=new javax.swing.ImageIcon(imageURL);
+        button=new javax.swing.JButton(icon);        
+        button.setName("Filter");        
+        button.setToolTipText("Anunturi unicale");        
+        button.addActionListener(this);        
+        this.toolbar.add(button);           
+        
         //Search button
         imageURL = MainFrame.class.getResource("images/view.gif");                        
         icon=new javax.swing.ImageIcon(imageURL);
         button=new javax.swing.JButton(icon);        
         button.setName("View");        
-        button.setToolTipText("Anunturi unicale");        
+        button.setToolTipText("Vizualizare anunturi");        
         button.addActionListener(this);        
         this.toolbar.add(button);
         
@@ -63,32 +73,33 @@ public class MainFrame extends JFrame implements ActionListener{
         icon=new javax.swing.ImageIcon(imageURL);
         button=new javax.swing.JButton(icon);        
         button.setName("Search");        
-        button.setToolTipText("Vizualizare");        
+        button.setToolTipText("Cautare anunturi");        
         button.addActionListener(this);        
         this.toolbar.add(button);
-        
-        //Filter button
-        /*
-        imageURL = MainFrame.class.getResource("images/filter.gif");                        
-        icon=new javax.swing.ImageIcon(imageURL);
-        button=new javax.swing.JButton(icon);        
-        button.setName("Filter");        
-        button.setToolTipText("Filtru");        
-        button.addActionListener(this);        
-        this.toolbar.add(button);   
-         */     
-
+                     
         //Favorits button
         imageURL = MainFrame.class.getResource("images/favorites.jpg");                        
         icon=new javax.swing.ImageIcon(imageURL);
         button=new javax.swing.JButton(icon);        
         button.setName("Favorites");        
-        button.setToolTipText("Favorite");        
+        button.setToolTipText("Anunturi favorite");        
         button.addActionListener(this);        
         this.toolbar.add(button);
         
         //Separator
-        this.toolbar.addSeparator();        
+        this.toolbar.addSeparator();      
+        
+        //Print button
+        imageURL = MainFrame.class.getResource("images/print.jpg");                        
+        icon=new javax.swing.ImageIcon(imageURL);
+        button=new javax.swing.JButton(icon);        
+        button.setName("Print");        
+        button.setToolTipText("Imprima");        
+        button.addActionListener(this);        
+        this.toolbar.add(button);
+        
+        //Separator
+        this.toolbar.addSeparator();           
 
         //Categories button
         imageURL = MainFrame.class.getResource("images/list.gif");                        
@@ -152,13 +163,16 @@ public class MainFrame extends JFrame implements ActionListener{
 
         if (((JButton)e.getSource()).getName()=="Download"){
             this.addTab("Descarca",new DownloadPanel(this));
-        }        
-        if (((JButton)e.getSource()).getName()=="Search"){
-            this.addTab("Search",new MessagesPanel());
-        }
+        } 
+        if (((JButton)e.getSource()).getName()=="Filter"){
+            this.addTab("Filter",new NewMessagesPanel());
+        }                     
         if (((JButton)e.getSource()).getName()=="View"){
-            this.addTab("View",new NewMessagesPanel());
+            this.addTab("View",new MessagesPanel());
         }     
+        if (((JButton)e.getSource()).getName()=="Search"){
+            this.addTab("Search",new SearchPanel());
+        }        
         if (((JButton)e.getSource()).getName()=="Favorites"){
             this.addTab("Favorites",new FavoritesPanel());
         }           
@@ -185,7 +199,7 @@ public class MainFrame extends JFrame implements ActionListener{
             this.tabbedpane.remove(this.tabbedpane.getSelectedIndex());        
         } else {
            if(javax.swing.JOptionPane.showConfirmDialog(null,"Are you sure you want to close application ?", "Exit",javax.swing.JOptionPane.YES_NO_OPTION)==0){
-                vgrabber.logger.Logger.getLogger().info("Appliction cloesed");                                                        
+                vgrabber.logger.Logger.getLogger().info("Appliction closed");                                                        
                 System.exit(0);
             }            
         }

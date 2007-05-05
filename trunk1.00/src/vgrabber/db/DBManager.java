@@ -32,11 +32,12 @@ public class DBManager {
         try {       
                                     
             String sql="";
-            //java.net.URL url=DBManager.class.getResource("sql/dbobjects.sql");
-            //java.io.File f=new java.io.File(url.toURI());                        
-            //java.io.FileInputStream fis=new java.io.FileInputStream(f);
-            //java.io.FileInputStream fis=new java.io.File()
-            java.io.FileInputStream fis=new java.io.FileInputStream("config/dbobjects.sql");
+            java.io.FileInputStream fis;
+            if (vgrabber.config.ConfigManager.geConfig().getServerType()=="MSSQL"){
+                fis=new java.io.FileInputStream("config/mssqldbobjects.sql");
+            } else {
+                fis=new java.io.FileInputStream("config/mysqldbobjects.sql");
+            }
             java.io.InputStreamReader isr=new java.io.InputStreamReader(fis,"unicode");
             java.io.BufferedReader br=new java.io.BufferedReader(isr);
             String line;

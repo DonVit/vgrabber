@@ -15,13 +15,18 @@ package vgrabber.common;
  */
 public class Config {
     
-    private String servertype=""; 
-    private String servername="";
-    private String database="";    
-    private String username="";    
-    private String password="";    
+    private String servertype; 
+    private String servername;
+    private String database;    
+    private String username;    
+    private String password;    
     
     public Config() {
+        servertype=""; 
+        servername="";
+        database="";    
+        username="";    
+        password="";            
     }
     
     public void setServerType(String servertype){

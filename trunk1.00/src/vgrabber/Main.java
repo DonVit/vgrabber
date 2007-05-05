@@ -11,6 +11,11 @@ package vgrabber;
 
 import java.util.*;
 
+import vgrabber.util.*;
+import vgrabber.common.*;
+import vgrabber.db.*;
+
+
 /**
  *
  * @author vdoni
@@ -123,7 +128,34 @@ public class Main {
         } catch (java.lang.InterruptedException ex1) {        
         }
         wf.dispose();
+         
+            java.util.ArrayList<vgrabber.common.Category> c=vgrabber.grabber.Grabber.GrabCategories1();
+            for (vgrabber.common.Category cat:c){
+                System.out.println(cat.getId()+" "+cat.getParentId()+" "+cat.toString());
+            }
          */
+        //vgrabber.common.Category c1=vgrabber.db.CategoryManager.getCategory(288);
+        /*
+        java.util.ArrayList<vgrabber.common.Category> cs=vgrabber.grabber.Grabber.GrabCategories();
+        for (vgrabber.common.Category c:cs){
+            vgrabber.db.CategoryManager.addCategory(c);
+        }
+        */
+        /*
+        java.util.ArrayList<Message> msgs=MessageManager.getMessage();
+        for(Message msg:msgs){
+            java.util.ArrayList<String> ps=RegExp.getPrices(msg.getAnunt());            
+            String pps="";
+            for(String p:ps){
+                pps+=p;
+            }
+        msg.setPrice(pps);
+        MessageManager.updMessage(msg);            
+        }
+        */
+        
+       //String s=vgrabber.grabber.Grabber.GrabPhoneInfo("769557");
+        
         vgrabber.logger.Logger.getLogger().info("Appliction started");                        
         vgrabber.client.MainFrame mf=new vgrabber.client.MainFrame();
         mf.setVisible(true);        

@@ -23,13 +23,13 @@ public class Message {
         private int edition_id;
         private int category_id;
         private boolean interested;
+        private String price;
 
 	public Message(String message, int edition_id, int category_id){
                 this.id=0;
 		this.message=message;
                 this.edition_id=edition_id;
-                this.category_id=category_id;
-                this.interested=false;
+                this.category_id=category_id;                
 	}        
 	public Message(int id, String message, int edition_id, int category_id, boolean interested){
                 this.id=id;
@@ -69,6 +69,12 @@ public class Message {
 	}        
    	public void setInterested(boolean interested){
 	this.interested=interested;
+	}    
+   	public String getPrice(){
+	return this.price;
+	}        
+   	public void setPrice(String price){
+	this.price=price;
 	}         
 	public ArrayList<Contact> getContacts(){
     	ArrayList<Contact> contacts=new ArrayList<Contact>();

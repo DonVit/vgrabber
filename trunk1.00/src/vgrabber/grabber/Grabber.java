@@ -105,7 +105,7 @@ public class Grabber {
             //get time before store to db
             ds=java.util.Calendar.getInstance().getTimeInMillis();            
             for(vgrabber.common.Message msg:messages){
-                vgrabber.db.MessageManager.AddMessage(msg);
+                vgrabber.db.MessageManager.addMessage(msg);
             }    
             ShowTime(ds,"Store to DB");        
             return messages;
@@ -143,14 +143,72 @@ public class Grabber {
                 while (matcher1.find()){
                     editions.add(getEditionFromString(matcher1.group()));                    
                 } 
-            }            
+            }  
+            
             } catch (java.net.UnknownHostException ex1) {
                 vgrabber.logger.Logger.getLogger().info(ex1.toString());                
             } catch (java.io.IOException ex2){       
                 vgrabber.logger.Logger.getLogger().info(ex2.toString());                
             }  
             return editions;
-        }        
+        }   
+        public static ArrayList<vgrabber.common.Category> GrabCategories(){
+        ArrayList<vgrabber.common.Category> categories=new ArrayList<vgrabber.common.Category>();        
+        try {            
+            URL url=new URL(" http://www.makler.md/top.php");    
+            HttpURLConnection con=(HttpURLConnection)url.openConnection();
+            con.setRequestMethod("GET"); 
+            con.setRequestProperty("Referer","http://www.makler.md");
+            con.setRequestProperty("User-Agent","Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 2.0.50727; .NET CLR 1.1.4322)");
+            con.connect();  
+            
+            String value="";            
+            java.io.InputStream is=con.getInputStream();
+            java.io.ByteArrayOutputStream bStrim=new java.io.ByteArrayOutputStream();
+            int ch;
+            while ((ch = is.read()) != EOF_CH) {                                
+                if (ch!=CARRIAGE_RETURN_CH){
+                    bStrim.write(ch);       
+                }
+            }
+            value=new String(bStrim.toByteArray(),"windows-1251");            
+            value=value.replace("\n","");
+            
+            //Grabb Categories
+            Pattern selectboxpattern = Pattern.compile("<select name=\"rubric\".*?</select>");
+            Matcher selectboxmatcher = selectboxpattern.matcher(value);        
+        
+            Pattern itempattern = Pattern.compile("<option value=.*?</option>");
+            Matcher itemmatcher;        
+            //String cat;             
+            //String[] catval;             
+            while (selectboxmatcher.find ()) {
+                itemmatcher=itempattern.matcher(selectboxmatcher.group());
+                while(itemmatcher.find()){
+                    if (!itemmatcher.group().contains("selected")){
+                        categories.add(getCategoryFromString(itemmatcher.group()));                            
+                    }
+                }
+            }            
+
+            //Grabb SubCategories
+            Pattern pattern = Pattern.compile("Menu\\[i\\]\\s=\\snew\\sparent\\.Item\\(.*?;i\\+\\+;");
+            Matcher matcher = pattern.matcher(value);
+            String cat;             
+            String[] catval;             
+            while (matcher.find ()) {
+                cat=matcher.group();                       
+                catval=cat.substring(cat.indexOf("(")+1,cat.indexOf(")")).split(",");
+                categories.add(new vgrabber.common.Category(Integer.parseInt(catval[0]),Integer.parseInt(catval[1]),catval[2].replace("\"","")));
+                //editions.add(getEditionFromString(matcher1.group()));                                
+            }                                                            
+            } catch (java.net.UnknownHostException ex1) {
+                vgrabber.logger.Logger.getLogger().info(ex1.toString());                
+            } catch (java.io.IOException ex2){       
+                vgrabber.logger.Logger.getLogger().info(ex2.toString());                
+            }  
+            return categories;
+        }           
         /**
         This method creates Edition object from the lines below
         <option value =\"1617\"> 04.01.07 ?2 ??.</option>
@@ -181,6 +239,21 @@ public class Grabber {
             }
             return edition;                
         }
+        /**
+        <option value=234>?????? ?????? ? ?????????</option>
+        <option value=230>?????????</option>
+        <option value=253>??????????</option>
+        */
+        public static vgrabber.common.Category getCategoryFromString(String str){                        
+            //Read category id
+            int id=Integer.parseInt(str.substring(str.indexOf("=")+1,str.indexOf(">")));              
+            //Read category paretn id
+            int parent_id=0;                        
+            //read category name
+            String str1=str.substring(str.indexOf(">")+1);            
+            String name=str1.substring(0,str1.indexOf("<"));
+            return new vgrabber.common.Category(id, parent_id, name);                
+        }
         public static void ShowTime(long ds,String action){
             long de=java.util.Calendar.getInstance().getTimeInMillis();            
             java.util.Date dif=new java.util.Date();
@@ -188,6 +261,76 @@ public class Grabber {
             java.text.SimpleDateFormat sf=new java.text.SimpleDateFormat("mm.ss.SSS");
             vgrabber.logger.Logger.getLogger().info(action+" tooks "+sf.format(dif));                            
         }
-
+        
+        /*
+<Request 11>POST http://www.nomer.org/kishinev/ HTTP/1.1
+<Request 11>Host: www.nomer.org
+<Request 11>User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.0.11) Gecko/20070312 Firefox/1.5.0.11
+//<Request 11>Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*\/*;q=0.5
+//<Request 11>Accept-Language: en-us,en;q=0.5
+<Request 11>Accept-Encoding: gzip,deflate
+//<Request 11>Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+<Request 11>Keep-Alive: 300
+<Request 11>Proxy-Connection: keep-alive
+<Request 11>Referer: http://www.nomer.org/kishinev/
+<Request 11>Cookie: hotlog=1
+<Request 11>Content-Type: application/x-www-form-urlencoded
+<Request 11>Content-Length: 38
+<Request 11>
+<Request 11>abonent=&phone=554462&street=&nd=&nkv=
+         
+         */
+        
+        public static String GrabPhoneInfo(String phonenumber){
+        String phoneinfo="";     
+        
+        try {     
+           //System.getProperties().put("proxySet","true");
+           //System.getProperties().put("proxyPort","3128");
+           //System.getProperties().put("proxyHost","localhost"); 
+            
+            URL url=new URL("http://www.nomer.org/kishinev/");    
+            HttpURLConnection con=(HttpURLConnection)url.openConnection();
+            con.setRequestMethod("POST"); 
+            con.setDoInput(true);
+            con.setDoOutput(true);
+            con.setRequestProperty("User-Agent","Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 2.0.50727; .NET CLR 1.1.4322)");
+            con.setRequestProperty("Accept","text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5");                        
+            con.setRequestProperty("Referer","http://www.nomer.org/kishinev/");            
+            con.setRequestProperty("Cookie","hotlog=1");                                                       
+            con.setRequestProperty("Content-Type","application/x-www-form-urlencoded");                        
+                                    
+            con.connect();  
+            DataOutputStream dos=new DataOutputStream(con.getOutputStream());
+            dos.writeBytes("abonent=&phone="+phonenumber+"&street=&nd=&nkv=");
+            
+            
+            String value="";            
+            java.io.InputStream is=con.getInputStream();
+            java.io.ByteArrayOutputStream bStrim=new java.io.ByteArrayOutputStream();
+            int ch;
+            while ((ch = is.read()) != EOF_CH) {                                
+                if (ch!=CARRIAGE_RETURN_CH){
+                    bStrim.write(ch);       
+                }
+            }
+            value=new String(bStrim.toByteArray(),"UTF-8");            
+            value=value.replace("\n","");
+            
+            //Grabb Phonetable
+            Pattern tablepattern = Pattern.compile("<table class='vivodDannih'>.*?</table>");
+            Matcher tablematcher = tablepattern.matcher(value);        
+                                        
+            while (tablematcher.find ()) {
+                phoneinfo=tablematcher.group();
+            }            
+                                                           
+            } catch (java.net.UnknownHostException ex1) {
+                vgrabber.logger.Logger.getLogger().info(ex1.toString());                
+            } catch (java.io.IOException ex2){       
+                vgrabber.logger.Logger.getLogger().info(ex2.toString());                
+            }  
+            return phoneinfo;
+        }           
         
 }

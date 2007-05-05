@@ -98,6 +98,8 @@ public class MessagesPanel extends javax.swing.JPanel{
         this.messagespanel=new JPanel(new GridLayout(1,0));
         this.messagespanel.setBorder(BorderFactory.createTitledBorder("Anunturi:"));                
         this.messagestable=new JTable();                
+        javax.swing.table.TableCellRenderer tr = new MyCellRender();
+        this.messagestable.setDefaultRenderer(Object.class,tr);
         
         this.messagestablescrollpane=new JScrollPane(this.messagestable);                        
         this.messagestablescrollpane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);                
@@ -147,7 +149,7 @@ public class MessagesPanel extends javax.swing.JPanel{
     }
 
     private void fillMessagesTable(){
-        this.messages=vgrabber.db.MessageManager.GetMessagesByEditonAndCategory(((vgrabber.common.Edition)editioncombobox.getSelectedItem()),((vgrabber.common.Category)categorycombobox.getSelectedItem()));                                
+        this.messages=vgrabber.db.MessageManager.getMessagesByEditonAndCategory(((vgrabber.common.Edition)editioncombobox.getSelectedItem()),((vgrabber.common.Category)categorycombobox.getSelectedItem()));                                
         this.messagestable.setModel(new vgrabber.client.MessagesTableModel(messages));
         this.messagestable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);        
         this.messagestable.getColumnModel().getColumn(0).setMaxWidth(60);                       
@@ -170,7 +172,7 @@ public class MessagesPanel extends javax.swing.JPanel{
         }
     }    
     private void fillContactMessagesTable(vgrabber.common.Contact contact){            
-         this.contactmessages=vgrabber.db.MessageManager.GetMessagesByContact(contact);
+         this.contactmessages=vgrabber.db.MessageManager.getMessagesByContact(contact);
          this.contactmessagestable.setModel(new vgrabber.client.ContactMessagesTabelModel(this.contactmessages));
          this.contactmessagestable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);        
          this.contactmessagestable.getColumnModel().getColumn(0).setMaxWidth(30);                       

@@ -20,6 +20,12 @@ public class Category{
         private int parentid;        
 	private String name;
         private boolean toupdate;
+	public Category(int id, int parentid, String name){
+	this.id=id;
+        this.parentid=parentid;        
+	this.name=name;	
+        this.toupdate=false;
+	}        
 	public Category(int id, int parentid, String name, boolean toupdate){
 	this.id=id;
         this.parentid=parentid;        
@@ -53,4 +59,11 @@ public class Category{
 	public void setToUpdate(boolean toupdate){
 		this.toupdate=toupdate;
 	}
+        public boolean CompareTo(Category category){
+            if (this.id==category.getId()) {
+               return true; 
+            } else {
+               return false;
+            }                    
+        }
 }

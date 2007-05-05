@@ -41,7 +41,7 @@ public class ContactManager {
             return contact;
         }
     }
-    public static boolean ContactExists(Contact contact){
+    public static boolean exists(Contact contact){
         boolean result=false;
         try{        
         String sql="SELECT id, phone, note FROM contact WHERE (id = ?)";
@@ -81,7 +81,7 @@ public class ContactManager {
             return contacts;
         }
     }    
-    public static boolean AddContact(Contact contact){                
+    public static boolean addContact(Contact contact){                
         boolean added=false;
         try{        
         String sql="insert into contact(id, phone, note) values(?,?,?)";
@@ -99,7 +99,7 @@ public class ContactManager {
             return added;
         }        
     }
-    public static boolean UpdContact(Contact contact){        
+    public static boolean updContact(Contact contact){        
         boolean updated=false;
         try{        
         String sql="UPDATE contact SET id =?, phone =?, note =? WHERE (id = ?)";
@@ -118,7 +118,7 @@ public class ContactManager {
             return updated;
         }        
     }
-    public static boolean DelContact(Contact contact){        
+    public static boolean delContact(Contact contact){        
         boolean deleted=false;
         try{        
         String sql="delete contact WHERE (id = ?)";
