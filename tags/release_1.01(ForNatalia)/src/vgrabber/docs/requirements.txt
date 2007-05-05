@@ -1,0 +1,23 @@
+To Do List:
+
+
+N   P   Status    D
+1   L   Done    In toolbar sa fie button-ul "Close curent tab", care ar inchide tabul deschis curent.
+2   L   To Do   In toolbar sa fie button-ul "Refresh" care ar reincarca tabul curent deschis.
+3   M   To Do   De adaugat posibilitatea de adauga notite la anunturile din Faforite, adica inca o coloana "Note"
+4   M   To Do   De investigat posibilitatea de a mari inaltimea la row din tabel
+5   L   To Do   De adauga ceva text pe panelul Help
+6   M   To Do   Filtru dupa categorie sa lucreze pe toate taburile
+7   H   Done    Download tab de finisat
+8   H   To Do   Progress bar la download, la cereri de lunga durata la db
+
+
+
+
+
+
+Note:
+
+N - Number
+P - Priority
+D - Descriere
