@@ -1,0 +1,12 @@
+
+Constatari facute consultind Maklerul:
+
+1. Mai mult de 60% din anunturile din Makler se repeta.
+2. Multi din cei ce publica fac speculatii.
+
+Apare necesitatea de a vedea:
+
+1. Doar anunturile noi aparute intr-o perioada anumita
+2. De vazut mai multa informatie despre cel ce ofera/cere
+
+Aceasta aplicatie ofera aceste doua functionalitati
