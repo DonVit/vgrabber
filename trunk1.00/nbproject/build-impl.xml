@@ -248,9 +248,11 @@ is divided into following sections:
         </copy>
     </target>
     <target name="-post-compile">        
+        
         <!--Config Staff-->
         <mkdir dir="${config.dir}"/>
-        <copy file="${dbobjects}" todir="${config.dir}"/>
+        <copy file="${mssqldbobjects}" todir="${config.dir}"/>
+        <copy file="${mysqldbobjects}" todir="${config.dir}"/>
         <copy file="${config}" todir="${config.dir}"/>
 
         <!--Logs Staff-->
@@ -339,7 +341,8 @@ is divided into following sections:
     <target name="-post-jar">
         <!--Config staff -->
         <mkdir dir="${dist.configr.dir}"/>
-        <copy file="${dbobjects}" todir="${dist.configr.dir}"/>
+        <copy file="${mssqldbobjects}" todir="${dist.configr.dir}"/>
+        <copy file="${mysqldbobjects}" todir="${dist.configr.dir}"/>
         <copy file="${config}" todir="${dist.configr.dir}"/>
         
         <!--Log staff -->
