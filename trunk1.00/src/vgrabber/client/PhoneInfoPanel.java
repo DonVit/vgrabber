@@ -63,7 +63,7 @@ public class PhoneInfoPanel extends JPanel implements java.awt.event.ActionListe
         if (s==""){
             s="Nu este informatie pe acest numar !";
         }
-        String style="<style>table.vivodDannih { border-collapse: collapse;font-size: 9pt;font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif;font: normal; }		      table.vivodDannih td  { padding: 10px 10px 10px 20px; border: 0px; font: normal Verdana, Arial, Helvetica, sans-serif;}table.vivodDannih th {background: #6e99bf;color: white;height: 30px;text-align: center;font-size: 10pt;padding: 5px 10px 5px 10px;font: normal;border-left: 1px solid #87CEFA;}</style>";
+        String style="<style>table.vivodDannih{ border-collapse: collapse;font-size: 9pt;font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif;font: normal; } table.vivodDannih td  { padding: 10px 10px 10px 20px; border: 0px; font: normal Verdana, Arial, Helvetica, sans-serif;}table.vivodDannih th {background: #6e99bf;color: white;height: 30px;text-align: center;font-size: 10pt;padding: 5px 10px 5px 10px;font: normal;border-left: 1px solid #87CEFA;}</style>";
         return "<html>"+style+"<body>"+s+"</body></html>";        
 
     }

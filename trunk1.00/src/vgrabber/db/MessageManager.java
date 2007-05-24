@@ -129,7 +129,7 @@ public class MessageManager {
         ArrayList<Message> messages=new ArrayList<Message>();
         try{
             if (criteria.trim().length()!=0){                
-                String sql="SELECT anunt.id, anunt.editie_id, anunt.categorie_id, categorie.nume AS categorie_nume, anunt.anunt, anunt.interested FROM anunt INNER JOIN contact_anunt ON anunt.id = contact_anunt.anunt_id INNER JOIN categorie ON anunt.categorie_id = categorie.id WHERE ? ORDER BY anunt.editie_id DESC";            
+                String sql="SELECT anunt.id, anunt.editie_id, anunt.categorie_id, categorie.nume AS categorie_nume, anunt.anunt, anunt.interested FROM anunt INNER JOIN categorie ON anunt.categorie_id = categorie.id WHERE ? ORDER BY anunt.editie_id DESC";            
                 String[] criterias=criteria.split(",");
                 for (int i=0;i<criterias.length-1;i++){
                     sql=sql.replace("?","(anunt.anunt like N'%"+criterias[i].trim()+"%') OR ?");
