@@ -154,7 +154,7 @@ public class Main {
         }
         */
         
-       //String s=vgrabber.grabber.Grabber.GrabPhoneInfo("769557");
+       //String s=vgrabber.grabber.Grabber.GrabPhoneInfo("444444");
         
         vgrabber.logger.Logger.getLogger().info("Appliction started");                        
         vgrabber.client.MainFrame mf=new vgrabber.client.MainFrame();

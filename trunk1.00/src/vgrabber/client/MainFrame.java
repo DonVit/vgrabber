@@ -87,8 +87,18 @@ public class MainFrame extends JFrame implements ActionListener{
         this.toolbar.add(button);
         
         //Separator
-        this.toolbar.addSeparator();      
+        this.toolbar.addSeparator();        
+        //Phone info button
+        imageURL = MainFrame.class.getResource("images/phone.jpg");                        
+        icon=new javax.swing.ImageIcon(imageURL);
+        button=new javax.swing.JButton(icon);
+        button.setName("PhoneInfo");
+        button.setToolTipText("Phone Info");        
+        button.addActionListener(this);
+        this.toolbar.add(button);           
         
+        //Separator
+        this.toolbar.addSeparator();      
         //Print button
         imageURL = MainFrame.class.getResource("images/print.jpg");                        
         icon=new javax.swing.ImageIcon(imageURL);
@@ -117,8 +127,7 @@ public class MainFrame extends JFrame implements ActionListener{
         button.setName("Configurations");        
         button.setToolTipText("Configurari");        
         button.addActionListener(this);        
-        this.toolbar.add(button);
-
+        this.toolbar.add(button);     
         
         //Separator
         this.toolbar.addSeparator();        
@@ -129,8 +138,8 @@ public class MainFrame extends JFrame implements ActionListener{
         button.setName("Help");
         button.setToolTipText("Ajutor");        
         button.addActionListener(this);
-        this.toolbar.add(button);        
-
+        this.toolbar.add(button);       
+        
         //Separator
         this.toolbar.addSeparator();        
         //Close current tab
@@ -182,6 +191,9 @@ public class MainFrame extends JFrame implements ActionListener{
         if (((JButton)e.getSource()).getName()=="Configurations"){
             this.addTab("Configurations",new ConfigPanel());
         }
+        if (((JButton)e.getSource()).getName()=="PhoneInfo"){
+            this.addTab("PhoneInfo",new PhoneInfoPanel());
+        }             
         if (((JButton)e.getSource()).getName()=="Help"){
             this.addTab("Help",new HelpPanel());
         }          
