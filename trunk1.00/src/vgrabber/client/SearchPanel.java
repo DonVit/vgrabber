@@ -8,7 +8,10 @@
  */
 
 package vgrabber.client;
+
+import java.awt.*;
 import javax.swing.*;
+
 
 /**
  *
@@ -16,59 +19,92 @@ import javax.swing.*;
  */
 public class SearchPanel extends JPanel implements java.awt.event.ActionListener{
     
+    private final int labelwidth=150;
+    private final int textfieldwidth=160;
+    private final int buttonwidth=75;    
+    private final int combowidth=100;
+    private final int sizebetweencomp=10;
+    
     private JPanel toppanel;
     
+    private JPanel topsubpanel;
     private JLabel searchlabel;
     //private JTextField searchcriteria;
     private JComboBox searchcriteria;
+    private JLabel startlabel;
+    private JComboBox startedition;
+    private JLabel endlabel;
+    private JComboBox endedition;
     private JButton searchbutton;
     
     private JPanel centerpanel;    
     private JTable resulttable;
     private JScrollPane resultscrollpane;
+    private MessageContactsPanel mcp;
     
     public SearchPanel() {
         init();
     }
     private void init(){
-        this.setLayout(new java.awt.BorderLayout());
-        toppanel=new JPanel(new java.awt.BorderLayout());
+        this.setLayout(new BorderLayout());
+        SpringLayout springlayout=new SpringLayout();
+        toppanel=new JPanel();
         toppanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Search"));
-        
-        searchlabel=new JLabel("Enter search criteria:");
-        toppanel.add(searchlabel,java.awt.BorderLayout.WEST);
-        
-        //searchcriteria=new JTextField();        
-        //toppanel.add(searchcriteria,java.awt.BorderLayout.CENTER);
+                
+        searchlabel=new JLabel("Search criteria:");
+        toppanel.add(searchlabel);        
         
         searchcriteria=new JComboBox();
-        searchcriteria.setEditable(true);
-        toppanel.add(searchcriteria,java.awt.BorderLayout.CENTER);
+        searchcriteria.setEditable(true);        
+        searchcriteria.setPrototypeDisplayValue("WWWWWWWWWWWWWWWWWWWWWWWWWWWWW");                
+        toppanel.add(searchcriteria);        
+        
+        
+        startlabel=new JLabel("From:");
+        toppanel.add(startlabel);
+        startedition=new JComboBox();
+        for (vgrabber.common.Edition ed:vgrabber.db.EditionManager.GetAllEditions()){
+            startedition.addItem(ed);
+        }      
+        toppanel.add(startedition);
+        
+
+        endlabel=new JLabel("To:");
+        toppanel.add(endlabel);
+        endedition=new JComboBox();
+        for (vgrabber.common.Edition ed:vgrabber.db.EditionManager.GetAllEditions()){
+            endedition.addItem(ed);
+        }                 
+        toppanel.add(endedition);
         
         searchbutton=new JButton("Search");
         searchbutton.addActionListener(this);
-        toppanel.add(searchbutton,java.awt.BorderLayout.EAST);
+        //toppanel.add(searchbutton);
+        toppanel.add(searchbutton);
         
         this.add(toppanel,java.awt.BorderLayout.NORTH);
         
         centerpanel=new JPanel(new java.awt.BorderLayout());
         centerpanel.setBorder(BorderFactory.createTitledBorder("Search Results:"));
-        resulttable=new JTable();
-        resultscrollpane=new JScrollPane(resulttable);
-        centerpanel.add(resultscrollpane,java.awt.BorderLayout.CENTER);
+        //resulttable=new JTable();
+        //resultscrollpane=new JScrollPane(resulttable);
+        //centerpanel.add(resultscrollpane,java.awt.BorderLayout.CENTER);
+        mcp=new MessageContactsPanel();
+        centerpanel.add(mcp);
         this.add(centerpanel,java.awt.BorderLayout.CENTER);
     }
     
     public void actionPerformed(java.awt.event.ActionEvent e){                 
-        searchcriteria.addItem(searchcriteria.getSelectedItem());
-        resulttable.setModel(new ContactMessagesTabelModel(vgrabber.db.MessageManager.searchMessages(searchcriteria.getSelectedItem().toString())));       
-        resulttable.getColumnModel().getColumn(0).setPreferredWidth(30);                       
-        resulttable.getColumnModel().getColumn(0).setMaxWidth(60);      
-        resulttable.getColumnModel().getColumn(1).setPreferredWidth(40);      
-        resulttable.getColumnModel().getColumn(1).setMaxWidth(60);      
-        resulttable.getColumnModel().getColumn(2).setPreferredWidth(40);      
-        resulttable.getColumnModel().getColumn(2).setMaxWidth(60); 
-        resulttable.getColumnModel().getColumn(3).setPreferredWidth(100);      
-        resulttable.getColumnModel().getColumn(3).setMaxWidth(200);      
+        //searchcriteria.addItem(searchcriteria.getSelectedItem());
+        //resulttable.setModel(new ContactMessagesTabelModel(vgrabber.db.MessageManager.searchMessages(searchcriteria.getSelectedItem().toString())));       
+        //resulttable.getColumnModel().getColumn(0).setPreferredWidth(30);                       
+        //resulttable.getColumnModel().getColumn(0).setMaxWidth(60);      
+        //resulttable.getColumnModel().getColumn(1).setPreferredWidth(40);      
+        //resulttable.getColumnModel().getColumn(1).setMaxWidth(60);      
+        //resulttable.getColumnModel().getColumn(2).setPreferredWidth(40);      
+        //resulttable.getColumnModel().getColumn(2).setMaxWidth(60); 
+        //resulttable.getColumnModel().getColumn(3).setPreferredWidth(100);      
+        //resulttable.getColumnModel().getColumn(3).setMaxWidth(200);      
+        mcp.setMessages(vgrabber.db.MessageManager.searchMessages(searchcriteria.getSelectedItem().toString()));
     }
 }
