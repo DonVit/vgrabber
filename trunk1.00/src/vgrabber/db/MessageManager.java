@@ -151,6 +151,34 @@ public class MessageManager {
             return messages;
         }
     }        
+    public static ArrayList<Message> searchMessages(String criteria, Edition startedition, Edition endedition){
+        ArrayList<Message> messages=new ArrayList<Message>();
+        try{
+            if (criteria.trim().length()!=0){                
+                String sql="SELECT anunt.id, anunt.editie_id, anunt.categorie_id, categorie.nume AS categorie_nume, anunt.anunt, anunt.interested FROM anunt INNER JOIN categorie ON anunt.categorie_id = categorie.id WHERE ? ORDER BY anunt.editie_id DESC";            
+                sql=sql.replace("?","(anunt.editie_id BETWEEN "+startedition.getId()+" AND "+endedition.getId()+") AND (?)");
+                String[] criterias=criteria.split(",");
+                for (int i=0;i<criterias.length-1;i++){
+                    sql=sql.replace("?","(anunt.anunt like N'%"+criterias[i].trim()+"%') OR ?");
+                }
+                sql=sql.replace("?","(anunt.anunt like N'%"+criterias[criterias.length-1].trim()+"%')");
+                
+                java.sql.PreparedStatement psMessages=vgrabber.db.Connection.getConnection().prepareStatement(sql);
+                psMessages.execute();
+                java.sql.ResultSet rsMessages=psMessages.getResultSet();
+                while (rsMessages.next()){        
+                    Message message=new Message(rsMessages.getInt("id"),rsMessages.getString("anunt"),rsMessages.getInt("editie_id"),rsMessages.getInt("categorie_id"),rsMessages.getBoolean("interested"));        
+                    messages.add(message);
+                }
+            }
+        }
+        catch (java.sql.SQLException ex){
+            System.out.println(ex.toString());
+        }
+        finally{            
+            return messages;
+        }
+    }            
     public static ArrayList<Message> getNewMessagesByEditon(Edition edition, Category category){
         ArrayList<Message> messages=new ArrayList<Message>();
         try{        

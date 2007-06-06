@@ -11,6 +11,7 @@ package vgrabber.client;
 
 import java.awt.*;
 import javax.swing.*;
+import vgrabber.common.*;
 
 
 /**
@@ -94,17 +95,10 @@ public class SearchPanel extends JPanel implements java.awt.event.ActionListener
         this.add(centerpanel,java.awt.BorderLayout.CENTER);
     }
     
-    public void actionPerformed(java.awt.event.ActionEvent e){                 
-        //searchcriteria.addItem(searchcriteria.getSelectedItem());
-        //resulttable.setModel(new ContactMessagesTabelModel(vgrabber.db.MessageManager.searchMessages(searchcriteria.getSelectedItem().toString())));       
-        //resulttable.getColumnModel().getColumn(0).setPreferredWidth(30);                       
-        //resulttable.getColumnModel().getColumn(0).setMaxWidth(60);      
-        //resulttable.getColumnModel().getColumn(1).setPreferredWidth(40);      
-        //resulttable.getColumnModel().getColumn(1).setMaxWidth(60);      
-        //resulttable.getColumnModel().getColumn(2).setPreferredWidth(40);      
-        //resulttable.getColumnModel().getColumn(2).setMaxWidth(60); 
-        //resulttable.getColumnModel().getColumn(3).setPreferredWidth(100);      
-        //resulttable.getColumnModel().getColumn(3).setMaxWidth(200);      
-        mcp.setMessages(vgrabber.db.MessageManager.searchMessages(searchcriteria.getSelectedItem().toString()));
+    public void actionPerformed(java.awt.event.ActionEvent e){                         
+        String searchwords=searchcriteria.getSelectedItem().toString();
+        Edition startediton=(Edition)this.startedition.getSelectedItem();
+        Edition endediton=(Edition)this.endedition.getSelectedItem();
+        mcp.setMessages(vgrabber.db.MessageManager.searchMessages(searchwords,startediton,endediton));
     }
 }
