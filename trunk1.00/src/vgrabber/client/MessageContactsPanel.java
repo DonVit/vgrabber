@@ -120,7 +120,7 @@ public class MessageContactsPanel extends JPanel{
     private void fillMessagesTable(){
         //this.messages=vgrabber.db.MessageManager.getMessagesByEditonAndCategory(((vgrabber.common.Edition)editioncombobox.getSelectedItem()),((vgrabber.common.Category)categorycombobox.getSelectedItem()));                                
         messagestable.setModel(new vgrabber.client.MessagesTableModel(messages));
-        messagestable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);        
+        //messagestable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);        
         messagestable.getColumnModel().getColumn(0).setMaxWidth(60);                       
         messagestable.getColumnModel().getColumn(1).setMaxWidth(60);          
         messagestable.getColumnModel().getColumn(2).setMaxWidth(60); 
