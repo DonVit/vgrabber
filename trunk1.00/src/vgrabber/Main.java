@@ -135,12 +135,12 @@ public class Main {
             }
          */
         //vgrabber.common.Category c1=vgrabber.db.CategoryManager.getCategory(288);
-        /*
+       
         java.util.ArrayList<vgrabber.common.Category> cs=vgrabber.grabber.Grabber.GrabCategories();
         for (vgrabber.common.Category c:cs){
             vgrabber.db.CategoryManager.addCategory(c);
         }
-        */
+        
         /*
         java.util.ArrayList<Message> msgs=MessageManager.getMessage();
         for(Message msg:msgs){

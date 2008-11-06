@@ -32,8 +32,9 @@ public class DBManager {
         try {       
                                     
             String sql="";
+            String servertype="MSSQL";
             java.io.FileInputStream fis;
-            if (vgrabber.config.ConfigManager.geConfig().getServerType()=="MSSQL"){
+            if (vgrabber.config.ConfigManager.geConfig().getServerType().equals("MSSQL")){
                 fis=new java.io.FileInputStream("config/mssqldbobjects.sql");
             } else {
                 fis=new java.io.FileInputStream("config/mysqldbobjects.sql");

@@ -40,7 +40,9 @@ public class Connection {
             //connection properties
             Properties props = new Properties();
             props.put("user", cnf.getUserName());        
-            props.put("password", cnf.getPassword());                         
+            props.put("password", cnf.getPassword()); 
+            //Driver d = (Driver)Class.forName("com.microsoft.jdbc.sqlserver.SQLServerDriver").newInstance();
+
             Class.forName("com.microsoft.jdbc.sqlserver.SQLServerDriver");            
             connection = DriverManager.getConnection(url, props);                    
         } else {

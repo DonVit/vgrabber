@@ -113,10 +113,10 @@ public class Grabber {
         public static ArrayList<vgrabber.common.Edition> GrabEditions(){
         ArrayList<vgrabber.common.Edition> editions=new ArrayList<vgrabber.common.Edition>();        
         try {            
-            URL url=new URL(" http://www.makler.md/top.php");    
+            URL url=new URL("http://www.makler.md");    
             HttpURLConnection con=(HttpURLConnection)url.openConnection();
             con.setRequestMethod("GET"); 
-            con.setRequestProperty("Referer","http://www.makler.md");
+            //con.setRequestProperty("Referer","http://www.makler.md");
             con.setRequestProperty("User-Agent","Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 2.0.50727; .NET CLR 1.1.4322)");
             con.connect();  
             
@@ -131,8 +131,10 @@ public class Grabber {
             }
             value=new String(bStrim.toByteArray(),"windows-1251");            
             value=value.replace("\n","");
+            //old version
+            //Pattern pattern = Pattern.compile("<select name=\"issue\" align=\"absmiddle\" style=\"width: 121px;\">.*?</select>");                                                                                              
             
-            Pattern pattern = Pattern.compile("<select name=\"issue\" align=\"absmiddle\" style=\"width: 121px;\">.*?</select>");
+            Pattern pattern = Pattern.compile("(?s)<select name=\"issue\" align=\"absmiddle\" style=\"width: 121px;\">.+?</select>");                                                                                              
             Matcher matcher = pattern.matcher(value);
             
             Pattern pattern1 = Pattern.compile("<option value =.*?</option>");
@@ -155,10 +157,10 @@ public class Grabber {
         public static ArrayList<vgrabber.common.Category> GrabCategories(){
         ArrayList<vgrabber.common.Category> categories=new ArrayList<vgrabber.common.Category>();        
         try {            
-            URL url=new URL(" http://www.makler.md/top.php");    
+            URL url=new URL(" http://www.makler.md");    
             HttpURLConnection con=(HttpURLConnection)url.openConnection();
             con.setRequestMethod("GET"); 
-            con.setRequestProperty("Referer","http://www.makler.md");
+            //con.setRequestProperty("Referer","http://www.makler.md");
             con.setRequestProperty("User-Agent","Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 2.0.50727; .NET CLR 1.1.4322)");
             con.connect();  
             
@@ -175,7 +177,11 @@ public class Grabber {
             value=value.replace("\n","");
             
             //Grabb Categories
-            Pattern selectboxpattern = Pattern.compile("<select name=\"rubric\".*?</select>");
+            //Pattern selectboxpattern = Pattern.compile("<select name=\"rubric\".*?</select>");
+            //Pattern pattern = Pattern.compile("(?s)<select name=\"issue\" align=\"absmiddle\" style=\"width: 121px;\">.+?</select>");   
+            
+            Pattern selectboxpattern = Pattern.compile("(?s)<select name=\"rubric\" align=\"absmiddle\" style=\"width: 250px;\" onFocus=\" cancelLaggedSubmit()\" onChange=\"loadSubrubricMenu(this[this.selectedIndex].value,Menu);laggedSubmit(2000)\">.+?</select>");
+
             Matcher selectboxmatcher = selectboxpattern.matcher(value);        
         
             Pattern itempattern = Pattern.compile("<option value=.*?</option>");
@@ -220,19 +226,19 @@ public class Grabber {
             //Read edition id
             int id=Integer.parseInt(str.substring(16,20));            
             //read edition day
-            int day=Integer.parseInt(str.substring (22,24));
+            int day=Integer.parseInt(str.substring (23,25));
             //read edition month
-            int month=Integer.parseInt(str.substring(25,27));
+            int month=Integer.parseInt(str.substring(26,28));
             //read edition year
-            int year=Integer.parseInt(str.substring(28,30))+2000;                        
+            int year=Integer.parseInt(str.substring(29,31))+2000;                        
             //read edition note
-            String strdate="20"+str.substring(28,30)+"."+str.substring(25,27)+"."+str.substring(22,24);
+            String strdate="20"+str.substring(29,31)+"."+str.substring(26,28)+"."+str.substring(23,25);
             java.util.Date date;
             //parse date
             java.text.SimpleDateFormat sdf=new java.text.SimpleDateFormat("dd.MM.yy");
             try {            
-            date=sdf.parse(str.substring (22,30));                        
-            String note=str.substring(22,str.indexOf ("</option>"));                                    
+            date=sdf.parse(str.substring (23,31));                        
+            String note=str.substring(23,str.indexOf ("</option>"));                                    
             edition=new vgrabber.common.Edition(id,date, note);
             } catch (java.text.ParseException ex1) {
                 vgrabber.logger.Logger.getLogger().info(ex1.toString());                
