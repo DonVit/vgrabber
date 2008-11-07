@@ -180,8 +180,8 @@ public class Grabber {
             //Pattern selectboxpattern = Pattern.compile("<select name=\"rubric\".*?</select>");
             //Pattern pattern = Pattern.compile("(?s)<select name=\"issue\" align=\"absmiddle\" style=\"width: 121px;\">.+?</select>");   
             
-            Pattern selectboxpattern = Pattern.compile("(?s)<select name=\"rubric\" align=\"absmiddle\" style=\"width: 250px;\" onFocus=\" cancelLaggedSubmit()\" onChange=\"loadSubrubricMenu(this[this.selectedIndex].value,Menu);laggedSubmit(2000)\">.+?</select>");
-
+            //Pattern selectboxpattern = Pattern.compile("(?s)<select name=\"rubric\" align=\"absmiddle\" style=\"width: 250px;\" onFocus=\" cancelLaggedSubmit\\(\\)\" onChange=\"loadSubrubricMenu\\(this\\[this.selectedIndex\\]\\.value,Menu\\);laggedSubmit\\(2000\\)\">.+?</select>");
+            Pattern selectboxpattern = Pattern.compile("(?s)<select name=\"rubric\" align=\"absmiddle\" style=\"width: 250px;\" onFocus=\" cancelLaggedSubmit\\(\\)\" onChange=\"loadSubrubricMenu\\(this\\[this.selectedIndex\\]\\.value,Menu\\);laggedSubmit\\(2000\\)\">.+?</select>");
             Matcher selectboxmatcher = selectboxpattern.matcher(value);        
         
             Pattern itempattern = Pattern.compile("<option value=.*?</option>");
@@ -198,7 +198,8 @@ public class Grabber {
             }            
 
             //Grabb SubCategories
-            Pattern pattern = Pattern.compile("Menu\\[i\\]\\s=\\snew\\sparent\\.Item\\(.*?;i\\+\\+;");
+            //Pattern pattern = Pattern.compile("Menu\\[i\\]\\s=\\snew\\sparent\\.Item\\(.*?;i\\+\\+;");
+            Pattern pattern = Pattern.compile("Menu\\[i\\]\\s=\\snew\\sItem\\(.*?;i\\+\\+;");
             Matcher matcher = pattern.matcher(value);
             String cat;             
             String[] catval;             
