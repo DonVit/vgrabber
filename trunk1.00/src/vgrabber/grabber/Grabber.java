@@ -79,13 +79,14 @@ public class Grabber {
                         ShowTime(ds,"Read from buffer");
                              
                         ds=java.util.Calendar.getInstance().getTimeInMillis();
-                        Pattern pattern = Pattern.compile("<TD width=95%>.*?</TD>");
+                        //Pattern pattern = Pattern.compile("<TD width=95%>.*?</TD>");
+                        Pattern pattern = Pattern.compile("(?s)<td align=left valign=center>.+?</TD>");
                         Matcher matcher = pattern.matcher(value);            
                         
                         boolean hasMessages=false;
                         while (matcher.find()) {                
                             hasMessages=true;
-                            messages.add(new vgrabber.common.Message(matcher.group().replace("<TD width=95%>","").replace("</TD>",""),edition.getId(),category.getId()));
+                            messages.add(new vgrabber.common.Message(matcher.group().replace("<td align=left valign=center>","").replace("</TD>",""),edition.getId(),category.getId()));
                         }                    
                         //Check if the curent page has no messages then this means
                         //that this is empty page and previous page was the last 
