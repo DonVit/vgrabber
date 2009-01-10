@@ -41,30 +41,25 @@ public class CategoriesPanel extends JPanel implements java.awt.event.ActionList
         categoriestable.getSelectionModel().setSelectionInterval(0,0);        
         categoriesscroolpane=new javax.swing.JScrollPane(categoriestable);
         
-        getcategoriesbutton=new javax.swing.JButton("Get Categories");
+        getcategoriesbutton=new javax.swing.JButton("Grab/Update Categories");
         getcategoriesbutton.addActionListener(this);
         bottomsubpanel=new javax.swing.JPanel(new java.awt.BorderLayout());
-        bottomsubpanel.add(getcategoriesbutton,java.awt.BorderLayout.EAST);
-        //SpringLayout.Constraints savebuttoncons=centerPanelLayout.getConstraints(savebutton);
-        //getcategoriesbutton.setX(Spring.sum(Spring.constant(-buttonwidth),passwordcons.getConstraint(SpringLayout.EAST)));
-        //getcategoriesbutton.setY(Spring.sum(Spring.constant(sizebetweencomp*2),createdatabasecons.getConstraint(SpringLayout.SOUTH)));
-        //getcategoriesbutton.setWidth(Spring.constant(buttonwidth));               
-        
-        
-        
-        //add(categoriesscroolpane,java.awt.BorderLayout.CENTER); 
+        bottomsubpanel.add(getcategoriesbutton,java.awt.BorderLayout.EAST);       
+     
         centerpanel=new javax.swing.JPanel(new java.awt.BorderLayout());
         centerpanel.add(categoriesscroolpane,java.awt.BorderLayout.CENTER);
         centerpanel.add(bottomsubpanel,java.awt.BorderLayout.SOUTH);
         add(centerpanel,java.awt.BorderLayout.CENTER); 
-        
     }
     
     public void actionPerformed(java.awt.event.ActionEvent ae) {
-        java.util.ArrayList<vgrabber.common.Category> cs=vgrabber.grabber.Grabber.GrabCategories();
-        for (vgrabber.common.Category c:cs){
-            vgrabber.db.CategoryManager.addCategory(c);
-        } 
+        if(javax.swing.JOptionPane.showConfirmDialog(null,"Are you sure you want to Grab/Update Categories ?", "Grab/Update Categories",javax.swing.JOptionPane.YES_NO_OPTION)==0){
+            java.util.ArrayList<vgrabber.common.Category> cs=vgrabber.grabber.Grabber.GrabCategories();
+            for (vgrabber.common.Category c:cs){
+                vgrabber.db.CategoryManager.addCategory(c);
+            } 
+            javax.swing.JOptionPane.showMessageDialog(null,"Done","Done",1);
+        }
     }
     
 }
