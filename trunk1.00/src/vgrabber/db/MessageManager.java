@@ -182,8 +182,7 @@ public class MessageManager {
     public static ArrayList<Message> getNewMessagesByEditon(Edition edition, Category category){
         ArrayList<Message> messages=new ArrayList<Message>();
         try{        
-        //String sql="select tb1.id, (select categorie_id from anunt where id=tb1.id)as categorie_id, (select anunt from anunt where id=tb1.id )as anunt, (select interested from anunt where id=tb1.id )as interested from (select anunt.id, contact_anunt.contact_id from anunt inner join contact_anunt on anunt.id=contact_anunt.anunt_id where editie_id=?) tb1 where tb1.contact_id not in (select contact_anunt.contact_id from anunt inner join contact_anunt on anunt.id=contact_anunt.anunt_id where editie_id<>?) group by tb1.id";     
-        String sql="SELECT id, (SELECT categorie_id FROM anunt WHERE id = tb1.id) AS categorie_id,(SELECT anunt FROM anunt WHERE id = tb1.id) AS anunt,(SELECT     interested FROM          anunt WHERE      id = tb1.id) AS interested FROM         (SELECT     anunt.id, contact_anunt.contact_id FROM anunt INNER JOIN contact_anunt ON anunt.id = contact_anunt.anunt_id WHERE editie_id =? AND categorie_id =?) tb1 WHERE (contact_id NOT IN (SELECT contact_anunt.contact_id FROM anunt INNER JOIN contact_anunt ON anunt.id = contact_anunt.anunt_id WHERE editie_id <> ? AND categorie_id = ?)) GROUP BY id"; 
+        String sql="select tb1.id, (select categorie_id from anunt where id=tb1.id)as categorie_id, (select anunt from anunt where id=tb1.id )as anunt, (select interested from anunt where id=tb1.id )as interested from (select anunt.id, contact_anunt.contact_id from anunt inner join contact_anunt on anunt.id=contact_anunt.anunt_id where editie_id=?) tb1 where tb1.contact_id not in (select contact_anunt.contact_id from anunt inner join contact_anunt on anunt.id=contact_anunt.anunt_id where editie_id<>?) group by tb1.id";     
         java.sql.PreparedStatement psMessages=vgrabber.db.Connection.getConnection().prepareStatement(sql); 
         psMessages.setInt(1,edition.getId());
         psMessages.setInt(2,category.getId());
@@ -203,7 +202,32 @@ public class MessageManager {
         finally{            
             return messages;
         }
-    }        
+    }      
+     public static ArrayList<Message> getAbsoluteNewMessagesByEditon(Edition edition){
+        ArrayList<Message> messages=new ArrayList<Message>();
+        try{        
+        //String sql="select tb1.id, (select categorie_id from anunt where id=tb1.id)as categorie_id, (select anunt from anunt where id=tb1.id )as anunt, (select interested from anunt where id=tb1.id )as interested from (select anunt.id, contact_anunt.contact_id from anunt inner join contact_anunt on anunt.id=contact_anunt.anunt_id where editie_id=?) tb1 where tb1.contact_id not in (select contact_anunt.contact_id from anunt inner join contact_anunt on anunt.id=contact_anunt.anunt_id where editie_id<>?) group by tb1.id";     
+        String sql="exec spGetNews ?"; 
+        java.sql.PreparedStatement psMessages=vgrabber.db.Connection.getConnection().prepareCall(sql); 
+        psMessages.setInt(1,edition.getId());
+        //psMessages.setInt(2,category.getId());
+        //psMessages.setInt(3,edition.getId()); 
+        //psMessages.setInt(4,category.getId());        
+        psMessages.execute();
+            
+        java.sql.ResultSet rsMessages=psMessages.getResultSet();
+        while (rsMessages.next()){        
+        Message message=new Message(rsMessages.getInt("id"),rsMessages.getString("anunt"),edition.getId(),100,false);
+        messages.add(message);
+        }
+        }
+        catch (java.sql.SQLException ex){
+            System.out.println(ex.toString());
+        }
+        finally{            
+            return messages;
+        }
+    }       
     public static ArrayList<Message> getFavoriteMessages(){
         ArrayList<Message> messages=new ArrayList<Message>();
         try{        

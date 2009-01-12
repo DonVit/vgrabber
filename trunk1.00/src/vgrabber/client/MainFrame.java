@@ -46,6 +46,15 @@ public class MainFrame extends JFrame implements ActionListener{
         button.addActionListener(this);        
         this.toolbar.add(button);
         
+        //Upload button
+        imageURL = MainFrame.class.getResource("images/upload.png");                        
+        icon=new javax.swing.ImageIcon(imageURL);
+        button=new javax.swing.JButton(icon);        
+        button.setName("Upload");        
+        button.setToolTipText("Upload");        
+        button.addActionListener(this);        
+        this.toolbar.add(button);
+        
         //Separator
         this.toolbar.addSeparator();        
 
@@ -172,6 +181,10 @@ public class MainFrame extends JFrame implements ActionListener{
 
         if (((JButton)e.getSource()).getName()=="Download"){
             this.addTab("Descarca",new DownloadPanel(this));
+        } 
+        if (((JButton)e.getSource()).getName()=="Upload"){
+            //this.addTab("Upload",new UploadPanel(this));
+            this.addTab("Upload",new UploadPanel(this));
         } 
         if (((JButton)e.getSource()).getName()=="Filter"){
             this.addTab("Filter",new NewMessagesPanel());
