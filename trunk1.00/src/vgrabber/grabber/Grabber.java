@@ -135,7 +135,7 @@ public class Grabber {
             //old version
             //Pattern pattern = Pattern.compile("<select name=\"issue\" align=\"absmiddle\" style=\"width: 121px;\">.*?</select>");                                                                                              
             
-            Pattern pattern = Pattern.compile("(?s)<select name=\"issue\" align=\"absmiddle\" style=\"width: 121px;\">.+?</select>");                                                                                              
+            Pattern pattern = Pattern.compile("(?s)<select name=\"issue\" align=\"absmiddle\" style=\"width: 125px;\">.+?</select>");                                                                                              
             Matcher matcher = pattern.matcher(value);
             
             Pattern pattern1 = Pattern.compile("<option value =.*?</option>");
