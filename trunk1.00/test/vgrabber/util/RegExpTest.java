@@ -6,6 +6,7 @@ import junit.framework.*;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import vgrabber.grabber.Grabber;
 /*
  * RegExpTest.java
  * JUnit based test
@@ -38,6 +39,7 @@ public class RegExpTest extends TestCase {
     /**
      * Test of getPhoneNumbers method, of class RegExp.
      */
+/*    
     public void testGetPhoneNumbersValueNull() {
         System.out.println("getPhoneNumbers(null)");        
         String value = "";        
@@ -135,16 +137,50 @@ public class RegExpTest extends TestCase {
         
         ArrayList<String> result = RegExp.getPrices(value);
         assertEquals(expResult, result);                               
-    }    
+    } 
+ */   
     public void testGetPricesValue2(){
-        System.out.println("get{Prices(ddd.ddd euro)");        
+        ///System.out.println("get{Prices(ddd.ddd euro)");        
         String value = "1,16 ha Suruceni 136.000 euro. 23-26-87, 0-690-92-080.";        
-        ArrayList<String> expResult = new ArrayList<String>();        
-        expResult.add(" 136.000 euro");
-        ArrayList<String> result = RegExp.getPrices(value);
-        assertEquals(expResult, result);                               
-    }        
+        //ArrayList<String> expResult = new ArrayList<String>();        
+        //expResult.add(" 136.000 euro");
+        int exp=136000;
+        int result=Grabber.GrabPrice(value);
+        //ArrayList<String> result = RegExp.getPrices(value);
+        assertEquals(exp, result);                               
+    } 
     public void testGetPricesValue3(){
+        ///System.out.println("get{Prices(ddd.ddd euro)");        
+        String value = "???? ??? 121,222 евро, ?????????";        
+        //ArrayList<String> expResult = new ArrayList<String>();        
+        //expResult.add(" 136.000 euro");
+        int exp=121222;
+        int result=Grabber.GrabPrice(value);
+        //ArrayList<String> result = RegExp.getPrices(value);
+        assertEquals(exp, result);                               
+    }  
+    public void testGetPricesValue4(){
+        ///System.out.println("get{Prices(ddd.ddd euro)");        
+        String value = "???? ??? 12.222 евро, ?????????";        
+        //ArrayList<String> expResult = new ArrayList<String>();        
+        //expResult.add(" 136.000 euro");
+        int exp=12222;
+        int result=Grabber.GrabPrice(value);
+        //ArrayList<String> result = RegExp.getPrices(value);
+        assertEquals(exp, result);                               
+    }
+    public void testGetPricesValue5(){
+        ///System.out.println("get{Prices(ddd.ddd euro)");        
+        String value = "???? ??? 12222 евро, ?????????";        
+        //ArrayList<String> expResult = new ArrayList<String>();        
+        //expResult.add(" 136.000 euro");
+        int exp=12222;
+        int result=Grabber.GrabPrice(value);
+        //ArrayList<String> result = RegExp.getPrices(value);
+        assertEquals(exp, result);                               
+    }        
+   /* 
+    public void testGetPricesValue4(){
         System.out.println("get{Prices(dd тыс. евро.)");        
         String value = "12 тыс. евро. 75-96-67.";        
         ArrayList<String> expResult = new ArrayList<String>();        
@@ -159,6 +195,7 @@ public class RegExpTest extends TestCase {
         expResult.add(" 7400 евро");
         ArrayList<String> result = RegExp.getPrices(value);
         assertEquals(expResult, result);                               
-    }            
+    }  
+    */          
 }
 

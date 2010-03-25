@@ -339,6 +339,17 @@ public class Grabber {
                 vgrabber.logger.Logger.getLogger().info(ex2.toString());                
             }  
             return phoneinfo;
-        }           
+        }
+        public static int GrabPrice(String text){
+            int price=0;
+            
+            Pattern pricepattern = Pattern.compile("[\\d\\.\\,]{3,}\\s(euro|евро)");
+            Matcher pricematcher = pricepattern.matcher(text);                    
+            while (pricematcher.find ()) {
+                String str=pricematcher.group().replace(".","").replace(" ","").replace(",","");
+                price=Integer.parseInt(str.substring(0,str.length()-4));
+            }                 
+            return price;
+        }
         
 }
