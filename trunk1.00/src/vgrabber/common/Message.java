@@ -23,7 +23,7 @@ public class Message {
         private int edition_id;
         private int category_id;
         private boolean interested;
-        private String price;
+        private int price;
 
 	public Message(String message, int edition_id, int category_id){
                 this.id=0;
@@ -70,10 +70,10 @@ public class Message {
    	public void setInterested(boolean interested){
 	this.interested=interested;
 	}    
-   	public String getPrice(){
+   	public int getPrice(){
 	return this.price;
 	}        
-   	public void setPrice(String price){
+   	public void setPrice(int price){
 	this.price=price;
 	}         
 	public ArrayList<Contact> getContacts(){

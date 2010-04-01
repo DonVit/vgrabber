@@ -343,7 +343,9 @@ public class Grabber {
         public static int GrabPrice(String text){
             int price=0;
             
-            Pattern pricepattern = Pattern.compile("[\\d\\.\\,]{3,}\\s(euro|евро)");
+            //Pattern pricepattern = Pattern.compile("[\\d\\.\\,]{3,}\\s(euro|????|евро)");
+		Pattern pricepattern = Pattern.compile("[\\d\\.\\,]{3,}\\s(euro|????)");
+
             Matcher pricematcher = pricepattern.matcher(text);                    
             while (pricematcher.find ()) {
                 String str=pricematcher.group().replace(".","").replace(" ","").replace(",","");
@@ -351,5 +353,22 @@ public class Grabber {
             }                 
             return price;
         }
+         public static int GrabPrice(String text,String regexp){
+            int price=0;
+            
+            //Pattern pricepattern = Pattern.compile("[\\d\\.\\,]{3,}\\s(euro|????|евро)");
+            Pattern pricepattern = Pattern.compile(regexp);
+
+            Matcher pricematcher = pricepattern.matcher(text);                    
+            while (pricematcher.find ()) {
+                try {
+                    String str=pricematcher.group().replace(".","").replace(" ","").replace(",","");
+                    price=Integer.parseInt(str.substring(0,str.length()-4));
+                } catch (java.lang.Exception ex1) {
+                    vgrabber.logger.Logger.getLogger().info(ex1.toString()+"; "+text);                
+                }                
+            }                 
+            return price;
+        }       
         
 }

@@ -178,16 +178,47 @@ public class RegExpTest extends TestCase {
         int result=Grabber.GrabPrice(value);
         //ArrayList<String> result = RegExp.getPrices(value);
         assertEquals(exp, result);                               
+    }
+    public void testGetPricesValue6(){
+        ///System.out.println("get{Prices(ddd.ddd euro)");        
+        String value = "???? ??? 12.000 евро. ?????????";        
+        //ArrayList<String> expResult = new ArrayList<String>();        
+        //expResult.add(" 136.000 euro");
+        int exp=12000;
+        int result=Grabber.GrabPrice(value);
+        //ArrayList<String> result = RegExp.getPrices(value);
+        assertEquals(exp, result);                               
+    }
+    public void testGetPricesValue7(){
+        ///System.out.println("get{Prices(ddd.ddd euro)");        
+        String value = "???? ??? 13,000 euro ?????????";        
+        //ArrayList<String> expResult = new ArrayList<String>();        
+        //expResult.add(" 136.000 euro");
+        int exp=13000;
+        int result=Grabber.GrabPrice(value);
+        //ArrayList<String> result = RegExp.getPrices(value);
+        assertEquals(exp, result);                               
     }        
+    public void testGetPricesValue8(){
+        ///System.out.println("get{Prices(ddd.ddd euro)");        
+        String value = "36,5 ??.? + ?????, ??. ????????????, 30.000 ????. 79-32-69, 069-46-06-95";     
+        //ArrayList<String> expResult = new ArrayList<String>();        
+        //expResult.add(" 136.000 euro");
+        int exp=30000;
+        int result=Grabber.GrabPrice(value);
+        //ArrayList<String> result = RegExp.getPrices(value);
+        assertEquals(exp, result);                               
+    }     
    /* 
-    public void testGetPricesValue4(){
+    public void testGetPricesValue8(){
         System.out.println("get{Prices(dd тыс. евро.)");        
-        String value = "12 тыс. евро. 75-96-67.";        
+        String value = "143, 9/9, ???????????, 40.000 ????. 79-10-47, 068-08-74-77";        
         ArrayList<String> expResult = new ArrayList<String>();        
         expResult.add("12 тыс. евро");
         ArrayList<String> result = RegExp.getPrices(value);
         assertEquals(expResult, result);                               
     }            
+
     public void testGetPricesValue4(){
         System.out.println("get{Prices(1$)");        
         String value = "16 соток Грушево 7400 евро, проект, титул, трасса. 53-05-24.";        

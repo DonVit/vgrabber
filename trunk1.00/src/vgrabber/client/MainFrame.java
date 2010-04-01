@@ -128,6 +128,15 @@ public class MainFrame extends JFrame implements ActionListener{
         button.setToolTipText("Categorii");        
         button.addActionListener(this);        
         this.toolbar.add(button);
+
+        //Price button
+        imageURL = MainFrame.class.getResource("images/price.gif");                        
+        icon=new javax.swing.ImageIcon(imageURL);
+        button=new javax.swing.JButton(icon);        
+        button.setName("Price");        
+        button.setToolTipText("Price");        
+        button.addActionListener(this);        
+        this.toolbar.add(button);           
         
         //Configurations button
         imageURL = MainFrame.class.getResource("images/config.gif");                        
@@ -184,7 +193,7 @@ public class MainFrame extends JFrame implements ActionListener{
         } 
         if (((JButton)e.getSource()).getName()=="Upload"){
             //this.addTab("Upload",new UploadPanel(this));
-            this.addTab("Upload",new UploadPanel(this));
+            //this.addTab("Upload",new UploadPanel(this));
         } 
         if (((JButton)e.getSource()).getName()=="Filter"){
             this.addTab("Filter",new NewMessagesPanel());
@@ -201,9 +210,12 @@ public class MainFrame extends JFrame implements ActionListener{
         if (((JButton)e.getSource()).getName()=="Categories"){
             this.addTab("Categories",new CategoriesPanel());
         }                   
+        if (((JButton)e.getSource()).getName()=="Price"){
+            this.addTab("Price",new PricePanel());
+        }
         if (((JButton)e.getSource()).getName()=="Configurations"){
             this.addTab("Configurations",new ConfigPanel());
-        }
+        }        
         if (((JButton)e.getSource()).getName()=="PhoneInfo"){
             this.addTab("PhoneInfo",new PhoneInfoPanel());
         }             

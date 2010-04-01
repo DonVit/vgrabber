@@ -14,6 +14,7 @@ import java.util.*;
 import vgrabber.util.*;
 import vgrabber.common.*;
 import vgrabber.db.*;
+import vgrabber.grabber.*;
 
 
 /**
@@ -140,25 +141,37 @@ public class Main {
         for (vgrabber.common.Category c:cs){
             vgrabber.db.CategoryManager.addCategory(c);
         } 
-         */       
-        /*
-        java.util.ArrayList<Message> msgs=MessageManager.getMessage();
-        for(Message msg:msgs){
-            java.util.ArrayList<String> ps=RegExp.getPrices(msg.getAnunt());            
-            String pps="";
-            for(String p:ps){
-                pps+=p;
+                
+        if ((args.length > 0)&&(args[0]=="1")){
+            vgrabber.logger.Logger.getLogger().info("Appliction started - priceupdate");   
+            java.util.ArrayList<Message> msgs=MessageManager.getMessage();
+            for(Message msg:msgs){         
+                msg.setPrice(Grabber.GrabPrice(msg.getAnunt()));
+                MessageManager.updMessage(msg);            
             }
-        msg.setPrice(pps);
-        MessageManager.updMessage(msg);            
+        } else {
+            vgrabber.logger.Logger.getLogger().info("Appliction started - desktop");                        
+            vgrabber.client.MainFrame mf=new vgrabber.client.MainFrame();
+            mf.setVisible(true);    
         }
-        */
-        
-       //String s=vgrabber.grabber.Grabber.GrabPhoneInfo("444444");
-        
-        vgrabber.logger.Logger.getLogger().info("Appliction started");                        
-        vgrabber.client.MainFrame mf=new vgrabber.client.MainFrame();
-        mf.setVisible(true);        
+         */
+            vgrabber.logger.Logger.getLogger().info("Appliction started - desktop");                        
+            vgrabber.client.MainFrame mf=new vgrabber.client.MainFrame();
+            mf.setVisible(true);    
+         /*   
+        for (Edition edition:EditionManager.GetAllEditions()){
+            for(Message msg:MessageManager.getMessagesByEditon(edition)){
+                msg.setPrice(Grabber.GrabPrice(msg.getAnunt()));
+                MessageManager.updMessagePrice(msg);    
+            } 
+        }
+        /*    
+        java.util.ArrayList<Message> msgs=MessageManager.getMessage();
+        for(Message msg:msgs){         
+            msg.setPrice(Grabber.GrabPrice(msg.getAnunt()));
+            MessageManager.updMessage(msg);            
+        }
+         */
     }
     
 }

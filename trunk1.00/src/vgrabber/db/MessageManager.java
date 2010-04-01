@@ -48,7 +48,8 @@ public class MessageManager {
     public static ArrayList<Message> getMessage(){
         ArrayList<Message> messages=new ArrayList<Message>();
         try{        
-        String sql="SELECT id, anunt, editie_id, categorie_id, interested FROM anunt where price=''";
+        //String sql="SELECT id, anunt, editie_id, categorie_id, interested FROM anunt where price=''";
+        String sql="SELECT id, anunt, editie_id, categorie_id, interested FROM anunt where price is null";
         java.sql.PreparedStatement psMessages=vgrabber.db.Connection.getConnection().prepareStatement(sql);        
         psMessages.execute();
         java.sql.ResultSet rsMessages=psMessages.getResultSet();        
@@ -87,7 +88,7 @@ public class MessageManager {
     public static ArrayList<Message> getMessagesByEditon(Edition edition){
         ArrayList<Message> messages=new ArrayList<Message>();
         try{        
-        String sql="SELECT id, categorie_id, anunt, interested FROM anunt WHERE editie_id = ?";
+        String sql="SELECT id, categorie_id, anunt, interested FROM anunt WHERE editie_id = ? ";
         java.sql.PreparedStatement psMessages=vgrabber.db.Connection.getConnection().prepareStatement(sql);
         psMessages.setInt(1,edition.getId());
         psMessages.execute();
@@ -103,7 +104,27 @@ public class MessageManager {
         finally{            
             return messages;
         }
-    }    
+    }
+    public static ArrayList<Message> getMessagesWithoutPriceByEditon(Edition edition){
+        ArrayList<Message> messages=new ArrayList<Message>();
+        try{        
+        String sql="SELECT id, categorie_id, anunt, interested FROM anunt WHERE editie_id = ? and (price=0 or price is null) ";
+        java.sql.PreparedStatement psMessages=vgrabber.db.Connection.getConnection().prepareStatement(sql);
+        psMessages.setInt(1,edition.getId());
+        psMessages.execute();
+        java.sql.ResultSet rsMessages=psMessages.getResultSet();
+        while (rsMessages.next()){        
+        Message message=new Message(rsMessages.getInt("id"),rsMessages.getString("anunt"),edition.getId(),rsMessages.getInt("categorie_id"),rsMessages.getBoolean("interested"));        
+        messages.add(message);
+        }
+        }
+        catch (java.sql.SQLException ex){
+            System.out.println(ex.toString());
+        }
+        finally{            
+            return messages;
+        }
+    }      
     public static ArrayList<Message> getMessagesByEditonAndCategory(Edition edition, Category category){
         ArrayList<Message> messages=new ArrayList<Message>();
         try{        
@@ -291,7 +312,7 @@ public class MessageManager {
         psMessage.setInt(2,message.getCategory_id());
         psMessage.setString(3,message.getAnunt());
         psMessage.setBoolean(4,message.getInterested());        
-        psMessage.setString(5, message.getPrice());        
+        psMessage.setInt(5, message.getPrice());        
         psMessage.setInt(6,message.getId());        
         psMessage.execute();
 
@@ -321,6 +342,28 @@ public class MessageManager {
             return updated;
         }        
     }
+    public static boolean updMessagePrice(Message message){        
+        boolean updated=false;
+        try{        
+        String sql="UPDATE anunt SET price=? WHERE (id = ?)";
+        java.sql.PreparedStatement psMessage=vgrabber.db.Connection.getConnection().prepareStatement(sql);                
+        //psMessage.setInt(1,message.getEdition_id());        
+        //psMessage.setInt(2,message.getCategory_id());
+        //psMessage.setString(3,message.getAnunt());
+        //psMessage.setBoolean(4,message.getInterested());        
+        psMessage.setInt(1, message.getPrice());        
+        psMessage.setInt(2,message.getId());        
+        psMessage.execute();
+
+        updated=true;
+        }
+        catch (java.sql.SQLException ex){
+            System.out.println(ex.toString());
+        }
+        finally{            
+            return updated;
+        }        
+    }    
     public static boolean delMessage(Message message){        
         boolean deleted=false;
         try{     
